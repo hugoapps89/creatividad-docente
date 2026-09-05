@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Creatividad Docente</title>
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">💡</div><div><h1>Creatividad Docente</h1><p>Planea mejor. Enseña mejor.</p></div></div>
+  <nav class="nav">
+    <div class="nav-title">Inicio</div>
+    <a class="active" href="#" data-action="home">⌂ <span>Inicio</span></a>
+    <div class="nav-title">Planeación</div>
+    <a href="#" data-action="new" onclick="showView('nueva');return false">✎ <span>Nueva planeación</span></a>
+    <a href="#planes" data-action="plans">
+  ▣ <span>Mis planeaciones</span>
+</a>
+    <a href="#" data-action="projects">♙ <span>Proyectos</span></a>
+    <a href="#" data-action="library">▤ <span>Biblioteca de contenidos</span></a>
+    <a href="#" data-action="pda">☑ <span>PDA por fase</span></a>
+    <div class="nav-title">Herramientas</div>
+    <a href="#" data-action="ai">✣ <span>Generador con IA</span><b class="badge">Nuevo</b></a>
+    <a href="#" data-action="rubrics">▧ <span>Rúbricas</span></a>
+    <a href="#" data-action="eval">☑ <span>Evaluación formativa</span></a>
+    <a href="#" data-action="resources">▱ <span>Recursos y materiales</span></a>
+    <div class="nav-title">Mi cuenta</div>
+    <a href="#">♙ <span>Perfil</span></a>
+    <a href="#">⚙ <span>Configuración</span></a>
+  </nav>
+  <div class="pro"><strong>⭐ Docente PRO</strong><p>Más funciones, más recursos, más impacto.</p><button onclick="toast('La versión PRO estará disponible próximamente.')">Actualizar a PRO</button></div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <button class="menu" onclick="toggleMenu()">☰</button>
+  <div class="search">⌕ <input id="search" placeholder="Buscar planeaciones, contenidos, PDA..."><span>Ctrl + K</span></div>
+  <div class="user"><div class="bell">♧<b class="count">3</b></div><div class="avatar">HC</div><div><strong>Hugo CR</strong><small>Docente</small></div><span>⌄</span></div>
+</header>
+
+<section class="content">
+  <div class="heading"><div><h2>¡Bienvenido, <span>Hugo!</span></h2><p>¿Qué planeación vamos a crear hoy?</p></div><div class="date">▣ &nbsp; <span id="today"></span></div></div>
+
+  <div class="grid-top">
+    <div class="card action">
+      <div><div class="round blue">▤</div><h3>Nueva planeación</h3><p>Crea una planeación didáctica personalizada en minutos.</p></div>
+      <button class="btn blue" onclick="showView('nueva')">＋ Crear planeación</button>
+    </div>
+    <div class="card action">
+      <div><div class="round green">▰</div><h3>Mis planeaciones</h3><p>Consulta y edita tus planeaciones guardadas.</p></div>
+      <button class="btn green" onclick="showView('planes')">
+  Ver todas →
+</button>
+    </div>
+    <div class="card action">
+      <div><div class="round purple">♟</div><h3>Proyectos</h3><p>Diseña proyectos comunitarios y de aula.</p></div>
+      <button class="btn purple" onclick="toast('Módulo de proyectos seleccionado.')">Crear proyecto →</button>
+    </div>
+    <div class="card ai">
+      <div><small style="background:#7b60df;padding:5px 9px;border-radius:20px">Asistente con IA</small><h3 style="font-size:21px;margin-top:18px">Tu aliado para<br>planear mejor</h3><p>Describe tu idea y la IA te ayudará a crear una planeación completa.</p></div>
+      <div class="robot">🤖</div><button class="btn" onclick="toast('Asistente con IA: escribe tu idea para comenzar.')">✦ &nbsp; Usar IA</button>
+    </div>
+  </div>
+
+  <div class="lower">
+    <div>
+      <div class="card assistant" id="assistant">
+        <h3>Asistente para crear tu planeación</h3><p>Sigue los pasos para generar una planeación completa y personalizada.</p>
+        <div class="steps">
+          <div class="step active"><div class="circle">1</div><b>Datos generales</b></div><div class="line"></div>
+          <div class="step"><div class="circle">2</div><b>Contenido</b></div><div class="line"></div>
+          <div class="step"><div class="circle">3</div><b>PDA</b></div><div class="line"></div>
+          <div class="step"><div class="circle">4</div><b>Contexto</b></div><div class="line"></div>
+          <div class="step"><div class="circle">5</div><b>Metodología</b></div><div class="line"></div>
+          <div class="step"><div class="circle">6</div><b>Generar</b></div>
+        </div>
+        <div class="form">
+          <div class="field"><label>Grado</label><select><option>1°</option><option>2°</option><option>3°</option><option>4°</option><option>5°</option><option selected>6°</option></select></div>
+          <div class="field"><label>Fase</label><select><option>3</option><option>4</option><option selected>5</option></select></div>
+          <div class="field"><label>Campo formativo</label><select><option>Lenguajes</option><option>Saberes y pensamiento científico</option><option>Ética, naturaleza y sociedades</option><option>De lo humano y lo comunitario</option></select></div>
+        </div>
+        <div class="form-actions"><button class="link" onclick="toast('Proceso cancelado.')">Cancelar</button><button class="next" onclick="nextStep()">Siguiente →</button></div>
+      </div>
+
+      <div class="resources">
+        <h3>Explora recursos para tu práctica docente</h3>
+        <div class="resource-grid">
+          <div class="card resource"><strong>Biblioteca de contenidos</strong><p>Explora contenidos por campo formativo y fase.</p><a href="#" onclick="toast('Biblioteca de contenidos');return false">Explorar →</a></div>
+          <div class="card resource"><strong>PDA por fase</strong><p>Consulta los PDA organizados por fase y grado.</p><a href="#" onclick="toast('PDA por fase');return false">Consultar →</a></div>
+          <div class="card resource"><strong>Rúbricas</strong><p>Descarga rúbricas listas para evaluar aprendizajes.</p><a href="#" onclick="toast('Rúbricas');return false">Ver rúbricas →</a></div>
+          <div class="card resource"><strong>Recursos y materiales</strong><p>Encuentra materiales listos para tus clases.</p><a href="#" onclick="toast('Recursos y materiales');return false">Ver recursos →</a></div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="card recent">
+      <div class="recent-head"><h3>Recientes</h3><a href="#" onclick="toast('Mostrando todas las planeaciones');return false">Ver todas</a></div>
+      <div class="recent-item"><div class="docicon">▤</div><div><strong>Cuidemos el agua de nuestra comunidad</strong><small>6° · Español · 02/05/2025</small></div></div>
+      <div class="recent-item"><div class="docicon" style="background:#e8f7ef;color:#0a9b61">▤</div><div><strong>Historias que nos conectan</strong><small>5° · Lenguajes · 30/04/2025</small></div></div>
+      <div class="recent-item"><div class="docicon" style="background:#fff0df;color:#e88912">▤</div><div><strong>Mi comunidad y sus cambios</strong><small>4° · Saberes y pensamiento científico</small></div></div>
+      <div class="recent-item"><div class="docicon" style="background:#eee9ff;color:#6340d5">▤</div><div><strong>La energía en nuestras vidas</strong><small>6° · Saberes y pensamiento científico</small></div></div>
+    </aside>
+  </div>
+
+<section id="nueva" class="planner-view" style="display:none">
+  <div class="page-head"><span>ASISTENTE DOCENTE</span><h1>Nueva planeación ✨</h1><p>Completa los datos de tu grupo paso a paso.</p></div>
+  <div class="planner">
+    <aside aria-label="Pasos de la planeación">
+      <button class="step active" type="button" data-step="0"><strong>1</strong> Datos generales</button>
+      <button class="step" type="button" data-step="1"><strong>2</strong> Contenido y PDA</button>
+      <button class="step" type="button" data-step="2"><strong>3</strong> Contexto</button>
+      <button class="step" type="button" data-step="3"><strong>4</strong> Generar</button>
+    </aside>
+    <form id="planningForm" class="form-card">
+      <section class="wizard-panel active" data-panel="0">
+        <h2>🏫 Datos generales</h2><p class="section-help">Completa los datos básicos de tu escuela y del grupo para identificar la planeación.</p>
+        <div class="grid">
+          <label>Nombre de la escuela primaria<input id="schoolName" autocomplete="organization"></label>
+          <label>CCT<input id="schoolCct"></label>
+          <label>Localidad<input id="schoolLocality"></label>
+          <label>Zona escolar<input id="schoolZone"></label>
+          <label>Logo de la escuela
+  <input
+    id="schoolLogo"
+    type="file"
+    accept="image/png,image/jpeg,image/webp"
+  >
+  <small class="field-help">
+    Selecciona el logotipo de tu escuela.
+  </small>
+</label>
+          <label>Fecha de inicio<input id="startDate" type="date"></label>
+        </div>
+        <div class="wizard-navigation"><button type="button" class="wizard-next" data-next="1">Continuar →</button></div>
+      </section>
+      <section class="wizard-panel" data-panel="1">
+        <h2>📚 Contenido y PDA</h2><p class="section-help">Selecciona los elementos curriculares que orientarán tu planeación.</p>
+        <h3>🎓 Datos curriculares</h3><p class="subsection-help">Selecciona el grado, la fase, el campo formativo y la duración del trabajo.</p>
+        <div class="grid">
+          <label>Grado<select id="grade"><option>1.º Primaria</option><option>2.º Primaria</option><option>3.º Primaria</option><option>4.º Primaria</option><option>5.º Primaria</option><option>6.º Primaria</option></select></label>
+          <label>Fase<select id="phase"><option>Fase 3</option><option>Fase 4</option><option>Fase 5</option></select></label>
+          <label>Campo formativo<select id="field"><option>Lenguajes</option><option>Saberes y Pensamiento Científico</option><option>Ética, Naturaleza y Sociedades</option><option>De lo Humano y lo Comunitario</option></select></label>
+          <label>Duración<select id="duration"><option>1 semana</option><option>2 semanas</option><option>1 mes</option></select></label>
+        </div>
+        <h3>🏫 Proyecto</h3>
+<p class="subsection-help">
+  Define el escenario, la metodología, el nombre y la temporalidad del proyecto.
+</p>
+
+<div class="grid">
+
+  <label>Escenario
+    <select id="scenario">
+      <option>Aula</option>
+      <option>Escuela</option>
+      <option>Comunidad</option>
+    </select>
+  </label>
+
+  <label>Metodología
+    <select id="methodology">
+      <option>Aprendizaje Basado en Proyectos Comunitarios</option>
+      <option>Aprendizaje Basado en Indagación (STEAM)</option>
+      <option>Aprendizaje Basado en Problemas</option>
+      <option>Aprendizaje Servicio</option>
+    </select>
+  </label>
+
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;">
+
+  <label>Nombre del proyecto
+    <input id="projectName">
+  </label>
+
+  <label>Temporalidad del proyecto
+    <input
+      id="temporalidad"
+      type="text"
+      placeholder="Ej. Del 7 al 25 de septiembre de 2026"
+      autocomplete="off"
+    >
+  </label>
+
+</div>
+        <div class="axes-box"><h3>🧭 Ejes articuladores</h3><p class="subsection-help">Selecciona los ejes que se integrarán en la planeación.</p>
+          <label><input type="checkbox" value="Inclusión"> Inclusión</label>
+          <label><input type="checkbox" value="Pensamiento crítico"> Pensamiento crítico</label>
+          <label><input type="checkbox" value="Interculturalidad crítica"> Interculturalidad crítica</label>
+          <label><input type="checkbox" value="Igualdad de género"> Igualdad de género</label>
+          <label><input type="checkbox" value="Vida saludable"> Vida saludable</label>
+          <label><input type="checkbox" value="Apropiación de las culturas a través de la lectura y la escritura"> Apropiación de las culturas a través de la lectura y la escritura</label>
+          <label><input type="checkbox" value="Artes y experiencias estéticas"> Artes y experiencias estéticas</label>
+        </div>
+        <h3>📖 Contenido</h3><p class="subsection-help">Selecciona el contenido que deseas trabajar.</p><select id="content"><option>Cargando contenidos...</option></select>
+        <h3>🎯 PDA</h3><p class="subsection-help">Selecciona los PDA que se incluirán en la planeación.</p><div id="pda" class="pda-list"><div class="pda-empty">Selecciona un contenido para consultar sus PDA.</div></div>
+        <div class="wizard-navigation"><button type="button" class="wizard-prev" data-prev="0">← Anterior</button><button type="button" class="wizard-next" data-next="2">Continuar →</button></div>
+      </section>
+      <section class="wizard-panel" data-panel="2">
+        <h2>📝 Contexto</h2><p class="section-help">Describe las características, necesidades e intereses de tu grupo para contextualizar la propuesta.</p>
+        <textarea id="context" rows="10" placeholder="Contexto y necesidades del grupo..."></textarea>
+        <div class="wizard-navigation"><button type="button" class="wizard-prev" data-prev="1">← Anterior</button><button type="button" class="wizard-next" data-next="3">Revisar planeación →</button></div>
+      </section>
+      <section class="wizard-panel" data-panel="3">
+        <h2>✨ Generar planeación</h2><p class="section-help">Revisa la información y genera tu propuesta de planeación.</p>
+        <div class="ai-note">✨ <b>Tu asistente docente está listo</b><p>La propuesta se construirá a partir de los datos curriculares, el contexto y los PDA seleccionados.</p></div>
+        <div id="review" class="review-box"></div>
+        <div class="wizard-navigation"><button type="button" class="wizard-prev" data-prev="2">← Anterior</button><button type="submit" class="wizard-next">✦ Generar planeación</button></div>
+      </section>
+    </form>
+  </div>
+</section>
+<section id="projects" class="planner-view" style="display:none">
+
+  <div class="page-head">
+    <span>GESTIÓN DE PROYECTOS</span>
+    <h1>Mis proyectos 🚀</h1>
+    <p>Diseña, organiza y da seguimiento a tus proyectos de aula, escuela y comunidad.</p>
+  </div>
+
+  <div class="projects-toolbar">
+
+    <div class="projects-search">
+      🔎
+      <input
+        id="projectsSearch"
+        type="search"
+        placeholder="Buscar proyectos..."
+        autocomplete="off"
+      >
+    </div>
+
+    <select id="projectGradeFilter">
+      <option value="">Todos los grados</option>
+      <option value="1.º Primaria">1.º Primaria</option>
+      <option value="2.º Primaria">2.º Primaria</option>
+      <option value="3.º Primaria">3.º Primaria</option>
+      <option value="4.º Primaria">4.º Primaria</option>
+      <option value="5.º Primaria">5.º Primaria</option>
+      <option value="6.º Primaria">6.º Primaria</option>
+    </select>
+
+    <select id="projectStatusFilter">
+      <option value="">Todos los estados</option>
+      <option value="Borrador">Borrador</option>
+      <option value="Planeado">Planeado</option>
+      <option value="En curso">En curso</option>
+      <option value="Finalizado">Finalizado</option>
+    </select>
+
+    <button
+      type="button"
+      class="new-plan-button"
+      onclick="newProject()"
+    >
+      ＋ Nuevo proyecto
+    </button>
+
+  </div>
+
+  <div class="project-stats">
+
+    <div class="project-stat-card">
+      <span>📁</span>
+      <div>
+        <strong id="totalProjects">0</strong>
+        <small>Proyectos</small>
+      </div>
+    </div>
+
+    <div class="project-stat-card">
+      <span>🟢</span>
+      <div>
+        <strong id="activeProjects">0</strong>
+        <small>En curso</small>
+      </div>
+    </div>
+
+    <div class="project-stat-card">
+      <span>📝</span>
+      <div>
+        <strong id="draftProjects">0</strong>
+        <small>Borradores</small>
+      </div>
+    </div>
+
+    <div class="project-stat-card">
+      <span>🏆</span>
+      <div>
+        <strong id="finishedProjects">0</strong>
+        <small>Finalizados</small>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="projectsContainer" class="projects-container"></div>
+
+</section>
+<section id="planes" class="planner-view" style="display:none">
+
+  <div class="page-head">
+    <span>MIS PLANEACIONES</span>
+    <h1>Mis planeaciones 📚</h1>
+    <p>Consulta y administra las planeaciones que has guardado.</p>
+  </div>
+
+  <div class="plans-toolbar">
+
+    <div class="plans-search">
+      🔎
+      <input
+        id="plansSearch"
+        type="search"
+        placeholder="Buscar por proyecto, escuela, grado o campo formativo..."
+        autocomplete="off"
+      >
+    </div>
+
+    <button
+      type="button"
+      class="new-plan-button"
+      onclick="showView('nueva')"
+    >
+      ＋ Nueva planeación
+    </button>
+
+  </div>
+
+  <div id="plansContainer" class="plans-container"></div>
+
+</section>
+  <footer>© 2026 Creatividad Docente. Todos los derechos reservados. &nbsp; · &nbsp; Términos y condiciones &nbsp; · &nbsp; Política de privacidad</footer>
+</section>
+</main>
+</div>
+<div class="toast" id="toast"></div>
+  <script src="curriculum/fase3.js"></script>
+  <script src="curriculum/fase4.js"></script>
+  <script src="curriculum/fase5.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
