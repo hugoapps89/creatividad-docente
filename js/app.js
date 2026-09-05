@@ -26,110 +26,26 @@ document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLower
 const panels=$$('.wizard-panel'),steps=$$('.planner .step'),grade=$('#grade'),phase=$('#phase'),field=$('#field'),content=$('#content'),pda=$('#pda');
 const phaseByGrade={1:3,2:3,3:4,4:4,5:5,6:5};
 function clean(s){return String(s??'').replace(/[\u00ad\u200b\u200c\u200d]/g,'').replace(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])-\s*(?=[A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/g,'$1').replace(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])\s*[-–—]\s*(?=[A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/g,'$1').replace(/\r?\n+/g,' ').replace(/\s+/g,' ').trim()}
-function dataFor(ph){
-  const key='PLANEAnEM_FASE_'+ph;
-  const d=window[key];
-  if(d && d['FASE '+ph]) return d['FASE '+ph];
-  return null;
-}
+function esc(s){return clean(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function dataFor(ph){const key='PLANEAnEM_FASE_'+ph,d=window[key];return d&&d['FASE '+ph]?d['FASE '+ph]:null}
 function gradeNum(){return Number((grade?.value.match(/\d+/)||['1'])[0])}
 function currentData(){return dataFor(phaseByGrade[gradeNum()]||3)}
 function itemsFor(){const g=gradeNum(),data=currentData();return data?.[field?.value]?.grades?.[g]||[]}
-function populateFields(data){
-  if(!field||!data)return;
-  const fields=Object.keys(data);
-  const old=field.value;
-  field.innerHTML='';
-  fields.forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;field.appendChild(o)});
-  if(fields.includes(old))field.value=old;
-  else if(fields.length)field.value=fields[0];
-}
-function splitPdas(raw){
-  let t=clean(raw);
-  if(!t) return [];
-
-  // La base curricular contiene palabras partidas por saltos de línea del documento
-  // (ej. "fragmen- tos"). Las unimos antes de separar los aprendizajes.
-  t=t.replace(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])-+\s+(?=[A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/g,'$1');
-  t=t.replace(/\s+/g,' ').trim();
-
-  // Cada oración termina en ., ! o ?. No exigimos mayúscula después del punto:
-  // así evitamos unir "textos completos." con "Lee en voz alta..." cuando la
-  // fuente original trae el salto/espaciado de manera irregular.
-  const parts=t.match(/[^.!?]+(?:[.!?]+|$)/g)
-    ?.map(s=>s.trim())
-    .filter(Boolean) || [];
-
-  return parts.length ? parts : [t];
-}
-function renderPdas(item){
-  if(!pda)return;
-  pda.innerHTML='';
-  const texts=splitPdas(item?.pda);
-  if(!texts.length){
-    pda.innerHTML='<div class="pda-empty">Selecciona un contenido para consultar sus aprendizajes.</div>';
-    return;
-  }
-  texts.forEach((text,i)=>{
-    const label=document.createElement('label');
-    label.className='pda-choice';
-    const input=document.createElement('input');
-    input.type='checkbox'; input.name='pdas'; input.value=text; input.checked=true;
-    input.setAttribute('aria-label','Seleccionar aprendizaje');
-    const body=document.createElement('span');
-    body.className='pda-text'; body.textContent=text;
-    // Cada elemento queda separado visualmente. No se muestra la palabra "PDA" dentro del recuadro.
-    label.append(input,body);
-    pda.appendChild(label);
-  });
-  const meta=document.createElement('div');
-  meta.className='curriculum-meta';
-  meta.textContent=texts.length===1 ? '1 aprendizaje asociado al contenido seleccionado' : `${texts.length} aprendizajes asociados al contenido seleccionado`;
-  pda.appendChild(meta);
-}
-function fillContents(){
-  if(!content)return;
-  const arr=itemsFor();
-  content.innerHTML='';
-  if(!arr.length){content.innerHTML='<option value="">No hay contenidos disponibles para este grado y campo formativo</option>';renderPdas(null);updateCurriculumCount(0);return;}
-  arr.forEach((it,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=clean(it.content);content.appendChild(o)});
-  content.selectedIndex=0;
-  renderPdas(arr[0]);
-  updateCurriculumCount(arr.length);
-}
-function updateCurriculumCount(n){
-  let badge=$('#contentCount');
-  if(!badge&&content?.parentElement){badge=document.createElement('span');badge.id='contentCount';badge.className='curriculum-count';content.parentElement.appendChild(badge)}
-  if(badge)badge.textContent=n?`${n} contenidos disponibles`:'';
-}
-function refreshCurriculum(){
-  if(!grade||!phase||!field||!content)return;
-  const ph=phaseByGrade[gradeNum()]||3;
-  phase.value='Fase '+ph;phase.disabled=true;
-  const data=dataFor(ph);
-  if(!data){
-    console.error('Base curricular no encontrada', {fase:ph, claves:Object.keys(window).filter(k=>k.indexOf('PLANEAnEM_FASE_')===0)});
-    content.innerHTML='<option value="">No se pudo cargar la base curricular</option>';
-    renderPdas(null);
-    return;
-  }
-  populateFields(data);
-  fillContents();
-}
+function populateFields(data){if(!field||!data)return;const fields=Object.keys(data),old=field.value;field.innerHTML='';fields.forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;field.appendChild(o)});if(fields.includes(old))field.value=old;else if(fields.length)field.value=fields[0]}
+function splitPdas(raw){let t=clean(raw);if(!t)return[];t=t.replace(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])-+\s+(?=[A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/g,'$1');t=t.replace(/\s+/g,' ').trim();const parts=t.match(/[^.!?]+(?:[.!?]+|$)/g)?.map(s=>s.trim()).filter(Boolean)||[];return parts.length?parts:[t]}
+function renderPdas(item){if(!pda)return;pda.innerHTML='';const texts=splitPdas(item?.pda);if(!texts.length){pda.innerHTML='<div class="pda-empty">Selecciona un contenido para consultar sus aprendizajes.</div>';return}texts.forEach(text=>{const label=document.createElement('label');label.className='pda-choice';const input=document.createElement('input');input.type='checkbox';input.name='pdas';input.value=text;input.checked=true;input.setAttribute('aria-label','Seleccionar aprendizaje');const body=document.createElement('span');body.className='pda-text';body.textContent=text;label.append(input,body);pda.appendChild(label)});const meta=document.createElement('div');meta.className='curriculum-meta';meta.textContent=texts.length===1?'1 aprendizaje asociado al contenido seleccionado':`${texts.length} aprendizajes asociados al contenido seleccionado`;pda.appendChild(meta)}
+function fillContents(){if(!content)return;const arr=itemsFor();content.innerHTML='';if(!arr.length){content.innerHTML='<option value="">No hay contenidos disponibles para este grado y campo formativo</option>';renderPdas(null);updateCurriculumCount(0);return}arr.forEach((it,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=clean(it.content);content.appendChild(o)});content.selectedIndex=0;renderPdas(arr[0]);updateCurriculumCount(arr.length)}
+function updateCurriculumCount(n){let badge=$('#contentCount');if(!badge&&content?.parentElement){badge=document.createElement('span');badge.id='contentCount';badge.className='curriculum-count';content.parentElement.appendChild(badge)}if(badge)badge.textContent=n?`${n} contenidos disponibles`:''}
+function refreshCurriculum(){if(!grade||!phase||!field||!content)return;const ph=phaseByGrade[gradeNum()]||3;phase.value='Fase '+ph;phase.disabled=true;const data=dataFor(ph);if(!data){console.error('Base curricular no encontrada',{fase:ph});content.innerHTML='<option value="">No se pudo cargar la base curricular</option>';renderPdas(null);return}populateFields(data);fillContents()}
 function showStep(i){i=Math.max(0,Math.min(3,i));panels.forEach((p,j)=>p.classList.toggle('active',j===i));steps.forEach((s,j)=>{s.classList.toggle('active',j===i);s.classList.toggle('done',j<i)});if(i===3)buildReview()}
-function buildReview(){
-  const get=id=>$('#'+id)?.value||'';
-  const pdas=$$('#pda input:checked').map(x=>x.value);
-  const item=itemsFor()[Number(content?.value)];
-  const html=`<div style="display:grid;gap:8px;margin-top:18px"><div><b>Escuela:</b> ${clean(get('schoolName'))||'—'}</div><div><b>Grado / Fase:</b> ${clean(get('grade'))} · ${clean(get('phase'))}</div><div><b>Campo:</b> ${clean(get('field'))}</div><div><b>Duración:</b> ${clean(get('duration'))}</div><div><b>Proyecto:</b> ${clean(get('projectName'))||'—'}</div><div><b>Contenido:</b> ${clean(item?.content||'')}</div><div><b>PDA seleccionados:</b> ${pdas.length}</div><div><b>Contexto:</b> ${clean(get('context')).slice(0,220)||'—'}</div></div>`;
-  if($('#review'))$('#review').innerHTML=html;
-}
+function getData(){const get=id=>$('#'+id)?.value||'';const item=itemsFor()[Number(content?.value)];const pdas=$$('#pda input:checked').map(x=>x.value);const axes=$$('.axes-box input[type=checkbox]:checked').map(x=>x.value);return{school:clean(get('schoolName')),cct:clean(get('schoolCct')),locality:clean(get('schoolLocality')),zone:clean(get('schoolZone')),start:clean(get('startDate')),grade:clean(get('grade')),phase:clean(get('phase')),field:clean(get('field')),duration:clean(get('duration')),scenario:clean(get('scenario')),methodology:clean(get('methodology')),project:clean(get('projectName')),axes,content:clean(item?.content||''),pdas,context:clean(get('context'))}}
+function buildReview(){const d=getData();const html=`<div class="generated-summary"><div><b>Escuela:</b> ${esc(d.school)||'—'}</div><div><b>Grado / Fase:</b> ${esc(d.grade)} · ${esc(d.phase)}</div><div><b>Campo:</b> ${esc(d.field)}</div><div><b>Duración:</b> ${esc(d.duration)}</div><div><b>Proyecto:</b> ${esc(d.project)||'—'}</div><div><b>Contenido:</b> ${esc(d.content)||'—'}</div><div><b>Aprendizajes seleccionados:</b> ${d.pdas.length}</div><div><b>Ejes articuladores:</b> ${d.axes.length?esc(d.axes.join(', ')):'—'}</div><div><b>Contexto:</b> ${esc(d.context).slice(0,300)||'—'}</div></div>`;if($('#review'))$('#review').innerHTML=html}
+function activitySet(d){const method=d.methodology.toLowerCase();let inicio='Recuperar saberes previos mediante preguntas generadoras relacionadas con el contenido y el contexto del grupo. Presentar el propósito del proyecto y acordar los productos o evidencias esperadas.';let desarrollo='Organizar al grupo en equipos para explorar el contenido mediante lectura, diálogo, observación, investigación y resolución de situaciones vinculadas con su contexto. Acompañar el proceso con preguntas orientadoras y retroalimentación formativa.';let cierre='Socializar los productos y hallazgos. Recuperar lo aprendido, identificar dificultades y establecer acuerdos para mejorar el producto final.';if(method.includes('indagación')){desarrollo='Plantear una pregunta o situación problema, formular explicaciones iniciales, buscar y organizar información, contrastar evidencias y elaborar conclusiones. Registrar el proceso y comunicar los hallazgos.'}else if(method.includes('problemas')){desarrollo='Presentar una situación problemática auténtica, analizar sus causas, proponer alternativas, seleccionar una solución argumentada y ponerla a prueba. Registrar decisiones y aprendizajes.'}else if(method.includes('servicio')){desarrollo='Identificar una necesidad del entorno, planear una acción de servicio, distribuir responsabilidades, desarrollar la propuesta y documentar su impacto en la comunidad.'}else if(method.includes('proyectos')){desarrollo='Planear el proyecto con el grupo, investigar información relevante, desarrollar actividades colaborativas, elaborar el producto y revisarlo con criterios acordados antes de socializarlo.'}return{inicio,desarrollo,cierre}}
+function generatePlan(){const d=getData();if(!d.content||!d.pdas.length){toast('Selecciona un contenido y al menos un aprendizaje antes de generar.');return}const a=activitySet(d);const axes=d.axes.length?d.axes.map(x=>`<li>${esc(x)}</li>`).join(''):'<li>Se integrarán de acuerdo con las necesidades del proyecto.</li>';const pdas=d.pdas.map(x=>`<li>${esc(x)}</li>`).join('');const plan=document.createElement('div');plan.id='generatedPlan';plan.className='generated-plan';plan.innerHTML=`<div class="plan-toolbar"><div><span class="plan-kicker">PLANEACIÓN DIDÁCTICA</span><h2>${esc(d.project)||'Planeación didáctica'}</h2><p>${esc(d.school)||'Escuela primaria'} · ${esc(d.grade)} · ${esc(d.phase)}</p></div><div class="plan-actions"><button type="button" class="plan-btn" id="printPlan">🖨 Imprimir</button><button type="button" class="plan-btn primary" id="savePlan">💾 Guardar</button></div></div><div class="plan-grid"><section><h3>1. Datos generales</h3><div class="plan-table"><div><b>Escuela</b><span>${esc(d.school)||'—'}</span></div><div><b>CCT</b><span>${esc(d.cct)||'—'}</span></div><div><b>Localidad</b><span>${esc(d.locality)||'—'}</span></div><div><b>Zona escolar</b><span>${esc(d.zone)||'—'}</span></div><div><b>Grado</b><span>${esc(d.grade)}</span></div><div><b>Fase</b><span>${esc(d.phase)}</span></div><div><b>Campo formativo</b><span>${esc(d.field)}</span></div><div><b>Duración</b><span>${esc(d.duration)}</span></div><div><b>Escenario</b><span>${esc(d.scenario)}</span></div><div><b>Metodología</b><span>${esc(d.methodology)}</span></div></div></section><section><h3>2. Contenido y aprendizajes</h3><div class="plan-highlight"><b>Contenido</b><p>${esc(d.content)}</p></div><h4>Aprendizajes seleccionados</h4><ul>${pdas}</ul></section><section><h3>3. Contextualización</h3><p>${esc(d.context)||'La propuesta se contextualizará considerando las características, necesidades e intereses del grupo.'}</p></section><section><h3>4. Ejes articuladores</h3><ul>${axes}</ul></section><section><h3>5. Propósito</h3><p>Que las y los estudiantes desarrollen aprendizajes vinculados con <b>${esc(d.content)}</b>, movilizando sus saberes, experiencias y capacidades para construir un producto o respuesta pertinente a su contexto.</p></section><section><h3>6. Secuencia didáctica</h3><div class="sequence"><article><span>INICIO</span><p>${a.inicio}</p></article><article><span>DESARROLLO</span><p>${a.desarrollo}</p></article><article><span>CIERRE</span><p>${a.cierre}</p></article></div></section><section><h3>7. Evaluación formativa</h3><ul><li>Observar la participación, colaboración y argumentación durante las actividades.</li><li>Recuperar evidencias del proceso y del producto elaborado.</li><li>Realizar preguntas de retroalimentación para identificar avances y dificultades.</li><li>Promover autoevaluación y coevaluación con criterios claros.</li></ul></section><section><h3>8. Evidencias de aprendizaje</h3><ul><li>Registros, producciones o respuestas elaboradas durante el proceso.</li><li>Producto final del proyecto.</li><li>Explicaciones, conclusiones o acuerdos construidos por el grupo.</li></ul></section><section><h3>9. Recursos y materiales</h3><ul><li>Libros de texto y materiales disponibles en el aula.</li><li>Cuadernos, hojas, cartulinas y materiales para organizar información.</li><li>Recursos del entorno y fuentes de información pertinentes.</li><li>Materiales específicos que requiera el producto del proyecto.</li></ul></section><section><h3>10. Atención a la diversidad</h3><p>Ofrecer distintas formas de participación, representación y expresión; ajustar apoyos, tiempos y agrupamientos de acuerdo con las necesidades del grupo, favoreciendo la inclusión y la participación de todas y todos.</p></section></div>`;const old=$('#generatedPlan');if(old)old.remove();$('#review')?.insertAdjacentElement('afterend',plan);plan.scrollIntoView({behavior:'smooth',block:'start'});$('#printPlan')?.addEventListener('click',()=>window.print());$('#savePlan')?.addEventListener('click',()=>{const saved=JSON.parse(localStorage.getItem('creatividad_docente_planes')||'[]');saved.unshift({id:Date.now(),title:d.project||d.content,date:new Date().toISOString(),data:d});localStorage.setItem('creatividad_docente_planes',JSON.stringify(saved.slice(0,30)));toast('Planeación guardada en este dispositivo.')});toast('Planeación completa generada correctamente.')}
 steps.forEach(s=>s.addEventListener('click',()=>showStep(Number(s.dataset.step))));
 $$('[data-next]').forEach(b=>b.addEventListener('click',()=>showStep(Number(b.dataset.next))));
 $$('[data-prev]').forEach(b=>b.addEventListener('click',()=>showStep(Number(b.dataset.prev))));
-grade?.addEventListener('change',refreshCurriculum);
-field?.addEventListener('change',fillContents);
-content?.addEventListener('change',()=>renderPdas(itemsFor()[Number(content.value)]));
-$('#planningForm')?.addEventListener('submit',e=>{e.preventDefault();buildReview();toast('¡Planeación generada! Revisa el contenido y PDA seleccionados.')});
+grade?.addEventListener('change',refreshCurriculum);field?.addEventListener('change',fillContents);content?.addEventListener('change',()=>renderPdas(itemsFor()[Number(content.value)]));
+$('#planningForm')?.addEventListener('submit',e=>{e.preventDefault();buildReview();generatePlan()});
 refreshCurriculum();showStep(0);
 })();
