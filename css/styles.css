@@ -971,3 +971,75 @@ footer{font-size:11px;color:#7d8799;text-align:center;padding:18px}
   }
 
 }
+/* =========================================================
+   MENÚ MÓVIL — CORRECCIÓN REAL
+   El menú lateral debe estar por encima de toda la página
+   y el contenido debe quedar oscurecido detrás.
+   ========================================================= */
+
+@media screen and (max-width: 760px){
+
+  /* Menú lateral */
+  html body .sidebar{
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+
+    width: 290px !important;
+    max-width: 86vw !important;
+
+    z-index: 10001 !important;
+
+    transform: translate3d(-105%,0,0);
+    transition: transform .25s ease !important;
+
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Menú abierto */
+  html body .sidebar.open{
+    transform: translate3d(0,0,0) !important;
+  }
+
+  /*
+     Capa oscura detrás del menú.
+     Se activa únicamente cuando el menú está abierto.
+  */
+  html body:has(.sidebar.open)::before{
+    content: "";
+    position: fixed !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+
+    background: rgba(10,20,40,.48) !important;
+
+    z-index: 10000 !important;
+
+    pointer-events: auto !important;
+  }
+
+  /* El contenido siempre queda debajo */
+  html body .main{
+    position: relative !important;
+    z-index: 1 !important;
+  }
+
+  /*
+     El menú debe ocupar toda la altura disponible,
+     incluso en celulares con barras del navegador.
+  */
+  html body .sidebar.open{
+    height: 100vh !important;
+    height: 100dvh !important;
+  }
+
+  /* Evita desplazamiento de la página mientras está abierto */
+  html body:has(.sidebar.open){
+    overflow: hidden !important;
+  }
+}
