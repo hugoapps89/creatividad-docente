@@ -870,3 +870,104 @@ footer{font-size:11px;color:#7d8799;text-align:center;padding:18px}
   }
 
 }
+/* =========================================================
+   MENÚ MÓVIL — CORRECCIÓN DE CAPA Y SUPERPOSICIÓN
+   ========================================================= */
+
+@media screen and (max-width: 800px) {
+
+  /* El menú móvil siempre queda por encima del contenido */
+  html body .mobile-menu,
+  html body #mobileMenu {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+
+    width: min(86vw, 350px) !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+
+    z-index: 9999 !important;
+
+    background: #fff !important;
+
+    transform: translate3d(-110%, 0, 0);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+
+    box-shadow: 8px 0 30px rgba(40,20,70,.18);
+
+    transition:
+      transform .28s ease,
+      opacity .2s ease,
+      visibility 0s linear .28s;
+  }
+
+  /* MENÚ ABIERTO */
+  html body.mobile-menu-open .mobile-menu,
+  html body.mobile-menu-open #mobileMenu {
+    transform: translate3d(0,0,0) !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+
+    transition:
+      transform .28s ease,
+      opacity .2s ease,
+      visibility 0s linear 0s;
+  }
+
+  /* Capa oscura sobre el contenido */
+  html body .mobile-menu-overlay,
+  html body #mobileMenuOverlay {
+    position: fixed !important;
+    inset: 0 !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+
+    z-index: 9998 !important;
+
+    background: rgba(20, 24, 45, .42) !important;
+
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+      opacity .25s ease,
+      visibility 0s linear .25s;
+  }
+
+  /* OVERLAY ACTIVO */
+  html body.mobile-menu-open .mobile-menu-overlay,
+  html body.mobile-menu-open #mobileMenuOverlay {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+
+    transition:
+      opacity .25s ease,
+      visibility 0s linear 0s;
+  }
+
+  /* Evita que la página se mueva detrás del menú */
+  html body.mobile-menu-open {
+    overflow: hidden !important;
+    touch-action: none;
+  }
+
+  /* El contenido queda debajo del overlay */
+  html body .main,
+  html body .content,
+  html body .topbar {
+    position: relative;
+    z-index: 1;
+  }
+
+}
