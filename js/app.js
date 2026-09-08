@@ -13,7 +13,12 @@ window.showView=function(id){
 
   const planner=document.getElementById('nueva');
   const planes=document.getElementById('planes');
+const projects=document.getElementById('projects');
 
+/* Ocultar Proyectos al cambiar a cualquier otro apartado */
+if(id!=='projects' && projects){
+  projects.style.display='none';
+}
   // ==========================================
   // MIS PLANEACIONES
   // ==========================================
