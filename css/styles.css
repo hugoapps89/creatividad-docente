@@ -1043,3 +1043,806 @@ footer{font-size:11px;color:#7d8799;text-align:center;padding:18px}
     overflow: hidden !important;
   }
 }
+/* =========================================================
+   PROYECTOS — ASISTENTE DE CREACIÓN CON IA
+   ========================================================= */
+
+/* Contenedor general */
+#newProjectView{
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+/* Encabezado */
+#newProjectView .page-head{
+  margin-bottom: 28px;
+}
+
+#newProjectView .page-head span{
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  color: #7c3aed;
+  margin-bottom: 7px;
+}
+
+#newProjectView .page-head h1{
+  margin: 0 0 8px;
+  font-size: 32px;
+  line-height: 1.15;
+}
+
+#newProjectView .page-head p{
+  margin: 0;
+  max-width: 760px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   BARRA DE PROGRESO
+   ========================================================= */
+
+.project-wizard-progress{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  padding: 18px 22px;
+  background: #fff;
+  border: 1px solid #e7eaf0;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(15,23,42,.05);
+}
+
+.project-progress-step{
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+.project-progress-step span{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.project-progress-step strong{
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.project-progress-step.active{
+  color: #7c3aed;
+}
+
+.project-progress-step.active span{
+  background: #7c3aed;
+  color: white;
+  box-shadow: 0 5px 15px rgba(124,58,237,.25);
+}
+
+.project-progress-line{
+  flex: 1;
+  height: 2px;
+  background: #e2e8f0;
+  min-width: 20px;
+}
+
+
+/* =========================================================
+   TARJETA PRINCIPAL
+   ========================================================= */
+
+.project-form-card{
+  background: #fff;
+  border: 1px solid #e7eaf0;
+  border-radius: 22px;
+  padding: 32px;
+  box-shadow: 0 12px 35px rgba(15,23,42,.06);
+}
+
+
+/* =========================================================
+   TÍTULOS DE SECCIÓN
+   ========================================================= */
+
+.project-section-title{
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.project-section-title.compact{
+  margin-top: 34px;
+}
+
+.project-section-icon{
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3e8ff;
+  font-size: 21px;
+}
+
+.project-section-title h2{
+  margin: 0 0 5px;
+  font-size: 19px;
+  color: #172033;
+}
+
+.project-section-title p{
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   PROBLEMÁTICA
+   ========================================================= */
+
+.project-field-label{
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.project-problem-input{
+  width: 100%;
+  min-height: 170px;
+  box-sizing: border-box;
+  resize: vertical;
+  border: 1px solid #dbe1ea;
+  border-radius: 14px;
+  padding: 16px 17px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #172033;
+  background: #fbfcfe;
+  outline: none;
+  transition: .2s ease;
+}
+
+.project-problem-input::placeholder{
+  color: #94a3b8;
+}
+
+.project-problem-input:focus{
+  border-color: #8b5cf6;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(139,92,246,.10);
+}
+
+.project-writing-help{
+  margin-top: 10px;
+  padding: 12px 14px;
+  border-radius: 11px;
+  background: #faf5ff;
+  color: #6b21a8;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   DATOS DEL GRUPO
+   ========================================================= */
+
+.project-form-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 16px;
+}
+
+.project-form-grid label{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.project-form-grid select{
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid #dbe1ea;
+  border-radius: 11px;
+  padding: 0 13px;
+  background: #fff;
+  color: #334155;
+  font: inherit;
+  outline: none;
+}
+
+.project-form-grid select:focus{
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139,92,246,.08);
+}
+
+
+/* =========================================================
+   CAMPOS FORMATIVOS
+   ========================================================= */
+
+.project-fields-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 14px;
+}
+
+.project-field-option{
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 17px;
+  border: 1px solid #dfe4ec;
+  border-radius: 15px;
+  background: #fff;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.project-field-option:hover{
+  border-color: #a78bfa;
+  transform: translateY(-1px);
+  box-shadow: 0 7px 20px rgba(15,23,42,.06);
+}
+
+.project-field-option input{
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.project-field-option > div{
+  flex: 1;
+}
+
+.project-field-option strong{
+  display: block;
+  margin-bottom: 5px;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.project-field-option span{
+  display: block;
+  color: #64748b;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+.project-field-option b{
+  width: 25px;
+  height: 25px;
+  border: 2px solid #cbd5e1;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  font-size: 14px;
+  transition: .2s ease;
+}
+
+.project-field-option:has(input:checked){
+  border-color: #8b5cf6;
+  background: #faf5ff;
+  box-shadow: 0 0 0 2px rgba(139,92,246,.08);
+}
+
+.project-field-option:has(input:checked) strong{
+  color: #6d28d9;
+}
+
+.project-field-option:has(input:checked) b{
+  background: #7c3aed;
+  border-color: #7c3aed;
+  color: #fff;
+}
+
+.project-selection-message{
+  margin-top: 15px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.project-form-actions{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #edf0f4;
+}
+
+.project-form-actions .link{
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 10px 4px;
+}
+
+.project-form-actions .link:hover{
+  color: #334155;
+}
+
+.project-form-actions .next{
+  border: 0;
+  border-radius: 11px;
+  padding: 13px 20px;
+  background: #7c3aed;
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(124,58,237,.22);
+  transition: .2s ease;
+}
+
+.project-form-actions .next:hover{
+  background: #6d28d9;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:900px){
+
+  .project-form-grid{
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+
+  .project-wizard-progress{
+    overflow-x: auto;
+  }
+
+}
+
+@media(max-width:650px){
+
+  #newProjectView{
+    padding: 0 4px 35px;
+  }
+
+  #newProjectView .page-head h1{
+    font-size: 26px;
+  }
+
+  .project-form-card{
+    padding: 21px;
+    border-radius: 17px;
+  }
+
+  .project-form-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .project-fields-grid{
+    grid-template-columns: 1fr;
+  }
+
+  .project-wizard-progress{
+    padding: 14px;
+    gap: 8px;
+  }
+
+  .project-progress-step strong{
+    display: none;
+  }
+
+  .project-progress-line{
+    min-width: 18px;
+  }
+
+  .project-form-actions{
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .project-form-actions .next{
+    width: 100%;
+  }
+
+  .project-form-actions .link{
+    text-align: center;
+  }
+
+}
+/* =========================================================
+   BIBLIOTECA CURRICULAR — INTERFAZ PROFESIONAL
+   ========================================================= */
+
+#library{
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+
+/* ENCABEZADO */
+
+#library .page-head{
+  margin-bottom: 28px;
+}
+
+#library .page-head > span{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.12em;
+  color:#7c3aed;
+  margin-bottom:8px;
+}
+
+#library .page-head h1{
+  margin:0;
+  font-size:32px;
+  line-height:1.15;
+  font-weight:800;
+  color:#172033;
+}
+
+#library .page-head p{
+  margin:10px 0 0;
+  color:#64748b;
+  font-size:15px;
+  line-height:1.6;
+}
+
+
+/* BARRA DE FILTROS */
+
+.library-toolbar{
+  display:grid;
+  grid-template-columns:minmax(260px,1.8fr) 1fr 1fr 1.25fr;
+  gap:12px;
+  padding:16px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  box-shadow:0 4px 18px rgba(15,23,42,.05);
+  margin-bottom:18px;
+}
+
+.library-search{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:48px;
+  padding:0 15px;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:11px;
+  color:#64748b;
+}
+
+.library-search input{
+  width:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#172033;
+  font-size:14px;
+}
+
+.library-search input::placeholder{
+  color:#94a3b8;
+}
+
+.library-toolbar select{
+  width:100%;
+  min-height:48px;
+  padding:0 14px;
+  border:1px solid #e2e8f0;
+  border-radius:11px;
+  background:#fff;
+  color:#334155;
+  font-size:14px;
+  outline:none;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.library-toolbar select:hover{
+  border-color:#c4b5fd;
+}
+
+.library-toolbar select:focus{
+  border-color:#8b5cf6;
+  box-shadow:0 0 0 3px rgba(139,92,246,.10);
+}
+
+
+/* RESUMEN */
+
+.library-summary{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:20px 0;
+}
+
+.library-summary > div{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+}
+
+#libraryResultCount{
+  font-size:24px;
+  font-weight:800;
+  color:#172033;
+}
+
+.library-summary > div span{
+  color:#64748b;
+  font-size:14px;
+}
+
+.library-favorites-button{
+  border:1px solid #e2e8f0;
+  background:#fff;
+  color:#475569;
+  padding:10px 15px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.library-favorites-button:hover{
+  border-color:#facc15;
+  background:#fffbeb;
+  color:#92400e;
+}
+
+
+/* CONTENEDOR */
+
+.library-container{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+
+
+/* TARJETA */
+
+.library-card{
+  position:relative;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 3px 14px rgba(15,23,42,.045);
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+.library-card:hover{
+  transform:translateY(-2px);
+  border-color:#ddd6fe;
+  box-shadow:0 10px 28px rgba(15,23,42,.09);
+}
+
+
+/* FASE Y GRADO */
+
+.library-card-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:13px;
+}
+
+.library-phase,
+.library-grade{
+  display:inline-flex;
+  align-items:center;
+  min-height:28px;
+  padding:4px 9px;
+  border-radius:8px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.library-phase{
+  background:#f3e8ff;
+  color:#7e22ce;
+}
+
+.library-grade{
+  background:#eff6ff;
+  color:#2563eb;
+}
+
+
+/* CAMPO FORMATIVO */
+
+.library-field{
+  display:inline-block;
+  margin-bottom:18px;
+  color:#475569;
+  font-size:13px;
+  font-weight:700;
+}
+
+
+/* SECCIONES */
+
+.library-card-section{
+  margin-top:15px;
+}
+
+.library-label{
+  display:block;
+  margin-bottom:7px;
+  font-size:10px;
+  letter-spacing:.09em;
+  font-weight:900;
+  color:#7c3aed;
+}
+
+.library-card-section p{
+  margin:0;
+  color:#334155;
+  font-size:14px;
+  line-height:1.65;
+}
+
+
+/* PDA */
+
+.library-card-section + .library-card-section{
+  padding-top:15px;
+  border-top:1px solid #f1f5f9;
+}
+
+.library-card-section + .library-card-section .library-label{
+  color:#0891b2;
+}
+
+.library-card-section + .library-card-section p{
+  color:#475569;
+}
+
+
+/* ESTADO VACÍO */
+
+.library-empty{
+  grid-column:1 / -1;
+  text-align:center;
+  padding:70px 25px;
+  background:#fff;
+  border:1px dashed #cbd5e1;
+  border-radius:18px;
+}
+
+.library-empty > div{
+  width:64px;
+  height:64px;
+  margin:0 auto 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:18px;
+  background:#f5f3ff;
+  font-size:30px;
+}
+
+.library-empty h3{
+  margin:0;
+  color:#334155;
+  font-size:18px;
+}
+
+.library-empty p{
+  max-width:520px;
+  margin:9px auto 0;
+  color:#64748b;
+  line-height:1.6;
+  font-size:14px;
+}
+
+
+/* RESPONSIVE */
+
+@media screen and (max-width:1000px){
+
+  .library-toolbar{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .library-search{
+    grid-column:1 / -1;
+  }
+
+  .library-container{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media screen and (max-width:600px){
+
+  #library{
+    padding:0 2px 40px;
+  }
+
+  #library .page-head h1{
+    font-size:26px;
+  }
+
+  .library-toolbar{
+    grid-template-columns:1fr;
+    padding:12px;
+  }
+
+  .library-search{
+    grid-column:auto;
+  }
+
+  .library-summary{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .library-favorites-button{
+    width:100%;
+  }
+
+  .library-card{
+    padding:17px;
+  }
+
+  .library-card-top{
+    align-items:flex-start;
+  }
+
+}

@@ -12,16 +12,74 @@ window.showView=function(id){
   const homeLower=document.querySelector('.lower');
 
   const planner=document.getElementById('nueva');
-  const planes=document.getElementById('planes');
+const planes=document.getElementById('planes');
 const projects=document.getElementById('projects');
+const library=document.getElementById('library');
 
 /* Ocultar Proyectos al cambiar a cualquier otro apartado */
 if(id!=='projects' && projects){
   projects.style.display='none';
 }
+if(id!=='library' && library){
+  library.style.display='none';
+}
   // ==========================================
   // MIS PLANEACIONES
   // ==========================================
+  // ==========================================
+// BIBLIOTECA DE CONTENIDOS
+// ==========================================
+
+if(id==='library'){
+
+  // Ocultar completamente el inicio
+  if(homeHeading) homeHeading.style.display='none';
+  if(homeGrid) homeGrid.style.display='none';
+  if(homeLower) homeLower.style.display='none';
+
+  // Ocultar Nueva planeación
+  if(planner){
+    planner.style.display='none';
+  }
+
+  // Ocultar Mis planeaciones
+  if(planes){
+    planes.style.display='none';
+  }
+
+  // Ocultar Proyectos
+  if(projects){
+    projects.style.display='none';
+  }
+
+  // Mostrar Biblioteca
+  if(library){
+  library.style.display='block';
+  library.style.visibility='visible';
+  library.style.opacity='1';
+
+  if(typeof window.renderLibrary === 'function'){
+    window.renderLibrary();
+  }
+}
+
+  // Activar solamente Biblioteca
+  document.querySelectorAll('.nav a').forEach(a=>{
+    a.classList.toggle(
+      'active',
+      a.dataset.action==='library'
+    );
+  });
+
+  // Llevar la pantalla al inicio
+  window.scrollTo({
+    top:0,
+    left:0,
+    behavior:'instant'
+  });
+
+  return;
+}
   // ==========================================
   // PROYECTOS
   // ==========================================
@@ -44,8 +102,7 @@ if(id!=='projects' && projects){
     }
 
     // Mostrar PROYECTOS
-    const projects=document.getElementById('projects');
-
+    
     if(projects){
       projects.style.display='block';
       projects.style.visibility='visible';
@@ -306,6 +363,672 @@ function dataFor(ph){
   if(d && d['FASE '+ph]) return d['FASE '+ph];
   return null;
 }
+/* =========================================================
+   BIBLIOTECA CURRICULAR
+   ========================================================= */
+
+function getLibraryData(){
+
+  const result = [];
+
+  [3,4,5].forEach(phaseNumber => {
+
+    const data = dataFor(phaseNumber);
+
+    if(!data) return;
+
+    Object.keys(data).forEach(fieldName => {
+
+      const fieldData = data[fieldName];
+
+      if(!fieldData || !fieldData.grades) return;
+
+      Object.keys(fieldData.grades).forEach(gradeNumber => {
+
+        const items = fieldData.grades[gradeNumber];
+
+        if(!Array.isArray(items)) return;
+
+        items.forEach((item,index) => {
+
+          result.push({
+            id: `${phaseNumber}-${gradeNumber}-${fieldName}-${index}`,
+            phase: `Fase ${phaseNumber}`,
+            grade: `${gradeNumber}.º Primaria`,
+            field: fieldName,
+            content: clean(item.content || ''),
+            pda: clean(item.pda || '')
+          });
+
+        });
+
+      });
+
+    });
+
+  });
+
+  return result;
+}
+
+window.getLibraryData = getLibraryData;
+/* =========================================================
+   RENDERIZAR BIBLIOTECA CURRICULAR
+   ========================================================= */
+
+function renderLibrary(){
+
+  const container = document.getElementById('libraryContainer');
+  const count = document.getElementById('libraryResultCount');
+
+  if(!container) return;
+
+  const data = getLibraryData();
+
+  if(count){
+    count.textContent = data.length;
+  }
+
+  if(!data.length){
+
+    container.innerHTML = `
+      <div class="library-empty">
+        <div>📚</div>
+        <h3>No hay contenidos disponibles</h3>
+        <p>No se encontraron contenidos en la base curricular.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = data.map(item => `
+
+    <article class="library-card">
+
+      <div class="library-card-top">
+
+        <span class="library-phase">
+          ${item.phase}
+        </span>
+
+        <span class="library-grade">
+          ${item.grade}
+        </span>
+
+      </div>
+
+      <div class="library-field">
+        ${item.field}
+      </div>
+
+      <div class="library-card-section">
+
+        <span class="library-label">
+          CONTENIDO
+        </span>
+
+        <p>
+          ${item.content}
+        </p>
+
+      </div>
+
+      <div class="library-card-section">
+
+        <span class="library-label">
+          PDA
+        </span>
+
+        <p class="library-pda-instruction">
+          Selecciona los PDA que deseas utilizar.
+        </p>
+
+        <div class="library-pda-list">
+
+          ${
+            splitPdas(item.pda)
+              .map((pdaText, index) => `
+                
+                <label class="pda-choice library-pda-choice">
+
+                  <input
+                    type="checkbox"
+                    class="library-pda-checkbox"
+                    name="libraryPda_${item.id}"
+                    value="${pdaText.replace(/"/g, '&quot;')}"
+                  >
+
+                  <span class="pda-text">
+                    ${pdaText}
+                  </span>
+
+                </label>
+
+              `)
+              .join('')
+          }
+
+        </div>
+
+      </div>
+<div class="library-card-actions">
+
+  <button
+    type="button"
+    class="library-action library-action-primary"
+    onclick="useLibraryContent('${item.id}')"
+  >
+    ➕ Usar en mi planeación
+  </button>
+
+<button
+  type="button"
+  class="library-action"
+  onclick="copySelectedLibraryPDAs('${item.id}')"
+>
+  📋 Copiar PDA seleccionados
+</button>
+
+  <button
+    type="button"
+    class="library-action library-action-favorite"
+    onclick="toggleLibraryFavorite('${item.id}')"
+    aria-label="Agregar a favoritos"
+  >
+    ☆
+  </button>
+
+</div>
+    </article>
+
+  `).join('');
+}
+
+window.renderLibrary = renderLibrary;
+/* =========================================================
+   FILTROS DE LA BIBLIOTECA
+   ========================================================= */
+
+function filterLibrary(){
+
+  const search = document
+    .getElementById('librarySearch')?.value
+    .trim()
+    .toLowerCase() || '';
+
+  const phase = document
+    .getElementById('libraryPhase')?.value || '';
+
+  const grade = document
+    .getElementById('libraryGrade')?.value || '';
+
+  const field = document
+    .getElementById('libraryField')?.value || '';
+
+  const data = getLibraryData();
+
+  const filtered = data.filter(item => {
+
+    const matchesPhase =
+      !phase || item.phase === phase;
+
+    const matchesGrade =
+      !grade || item.grade === grade;
+
+    const matchesField =
+      !field || item.field === field;
+
+    const text = [
+      item.content,
+      item.pda,
+      item.field,
+      item.phase,
+      item.grade
+    ]
+      .join(' ')
+      .toLowerCase();
+
+    const matchesSearch =
+      !search || text.includes(search);
+
+    return (
+      matchesPhase &&
+      matchesGrade &&
+      matchesField &&
+      matchesSearch
+    );
+
+  });
+
+  renderLibraryResults(filtered);
+}
+
+window.filterLibrary = filterLibrary;
+function renderLibraryResults(data){
+
+  const container = document.getElementById('libraryContainer');
+  const count = document.getElementById('libraryResultCount');
+
+  if(!container) return;
+
+  if(count){
+    count.textContent = data.length;
+  }
+
+  if(!data.length){
+
+    container.innerHTML = `
+      <div class="library-empty">
+        <div>🔎</div>
+        <h3>No encontramos contenidos</h3>
+        <p>
+          Prueba con otra fase, grado o campo formativo.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = data.map(item => `
+
+    <article class="library-card">
+
+      <div class="library-card-top">
+
+        <span class="library-phase">
+          ${item.phase}
+        </span>
+
+        <span class="library-grade">
+          ${item.grade}
+        </span>
+
+      </div>
+
+      <div class="library-field">
+        ${item.field}
+      </div>
+
+      <div class="library-card-section">
+
+        <span class="library-label">
+          CONTENIDO
+        </span>
+
+        <p>
+          ${item.content}
+        </p>
+
+      </div>
+
+
+        <div class="library-pda-list">
+
+          ${
+            splitPdas(item.pda)
+              .map((pdaText, index) => `
+                
+                <label class="pda-choice library-pda-choice">
+
+                  <input
+                    type="checkbox"
+                    class="library-pda-checkbox"
+                    name="libraryPda_${item.id}"
+                    value="${pdaText.replace(/"/g, '&quot;')}"
+                  >
+
+                  <span class="pda-text">
+                    ${pdaText}
+                  </span>
+
+                </label>
+
+              `)
+              .join('')
+          }
+
+        </div>
+
+      </div>
+<div class="library-card-actions">
+
+  <button
+    type="button"
+    class="library-action library-action-primary"
+    onclick="useLibraryContent('${item.id}')"
+  >
+    ➕ Usar en mi planeación
+  </button>
+
+  <button
+  type="button"
+  class="library-action"
+  onclick="copySelectedLibraryPDAs('${item.id}')"
+>
+  📋 Copiar PDA seleccionados
+</button>
+
+  <button
+    type="button"
+    class="library-action library-action-favorite"
+    onclick="toggleLibraryFavorite('${item.id}')"
+    aria-label="Agregar a favoritos"
+  >
+    ☆
+  </button>
+
+</div>
+    </article>
+
+  `).join('');
+}
+
+window.renderLibraryResults = renderLibraryResults;
+/* =========================================================
+   EVENTOS DE FILTRADO DE LA BIBLIOTECA
+   ========================================================= */
+
+document
+  .getElementById('librarySearch')
+  ?.addEventListener('input', filterLibrary);
+
+document
+  .getElementById('libraryPhase')
+  ?.addEventListener('change', filterLibrary);
+
+document
+  .getElementById('libraryGrade')
+  ?.addEventListener('change', filterLibrary);
+
+document
+  .getElementById('libraryField')
+  ?.addEventListener('change', filterLibrary);
+/* =========================================================
+   ACCIONES DE LA BIBLIOTECA
+   ========================================================= */
+
+function useLibraryContent(id){
+
+  const item = getLibraryData().find(
+    content => content.id === id
+  );
+
+  if(!item){
+    toast('No se encontró el contenido seleccionado.');
+    return;
+  }
+
+  /*
+   * Guardamos temporalmente la selección.
+   * En el siguiente paso conectaremos esta selección
+   * directamente con los campos de la planeación.
+   */
+  localStorage.setItem(
+    'creatividadDocente_librarySelection',
+    JSON.stringify(item)
+  );
+
+  toast('✓ Contenido seleccionado para tu planeación.');
+
+  /*
+   * La vista correcta de Nueva planeación es "nueva".
+   */
+  window.__openingSavedPlan = true;
+  showView('nueva');
+
+  /*
+   * Permitimos que showView termine de preparar
+   * la interfaz antes de aplicar la selección.
+   */
+  setTimeout(() => {
+
+    const gradeNumber = Number(
+      (item.grade.match(/\d+/) || ['1'])[0]
+    );
+
+    if(grade){
+      grade.value = `${gradeNumber}.º Primaria`;
+    }
+
+    refreshCurriculum();
+
+    setTimeout(() => {
+
+      if(field){
+        field.value = item.field;
+      }
+
+      fillContents();
+
+      const items = itemsFor();
+
+      const index = items.findIndex(
+        x => clean(x.content) === clean(item.content)
+      );
+
+      if(index >= 0){
+
+        content.value = String(index);
+
+        renderPdas(items[index]);
+
+        /*
+         * Seleccionamos automáticamente todos
+         * los PDA asociados al contenido.
+         */
+        $$('#pda input').forEach(input => {
+          input.checked = true;
+        });
+
+      }
+
+      window.__openingSavedPlan = false;
+
+    }, 80);
+
+  }, 80);
+
+}
+
+window.useLibraryContent = useLibraryContent;
+
+
+/* =========================================================
+   VER PDA COMPLETO
+   ========================================================= */
+
+function viewLibraryPDA(id){
+
+  const item = getLibraryData().find(
+    content => content.id === id
+  );
+
+  if(!item){
+    toast('No se encontró el contenido seleccionado.');
+    return;
+  }
+
+  const modal = document.createElement('div');
+
+  modal.className = 'library-pda-modal';
+
+  modal.innerHTML = `
+
+    <div class="library-pda-overlay"></div>
+
+    <div class="library-pda-dialog">
+
+      <div class="library-pda-header">
+
+        <div>
+
+          <span class="library-pda-kicker">
+            ${item.phase} · ${item.grade}
+          </span>
+
+          <h2>${item.field}</h2>
+
+        </div>
+
+        <button
+          type="button"
+          class="library-pda-close"
+          aria-label="Cerrar"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="library-pda-content">
+
+        <span class="library-label">
+          CONTENIDO
+        </span>
+
+        <p>
+          ${item.content}
+        </p>
+
+        <span class="library-label library-pda-label">
+          PROCESO DE DESARROLLO DE APRENDIZAJE
+        </span>
+
+        <p>
+          ${item.pda || 'Sin PDA disponible'}
+        </p>
+
+      </div>
+
+    </div>
+
+  `;
+
+  document.body.appendChild(modal);
+
+  const close = () => {
+    modal.remove();
+  };
+
+  modal
+    .querySelector('.library-pda-close')
+    ?.addEventListener('click', close);
+
+  modal
+    .querySelector('.library-pda-overlay')
+    ?.addEventListener('click', close);
+
+}
+
+window.viewLibraryPDA = viewLibraryPDA;
+
+
+/* =========================================================
+   FAVORITOS
+   ========================================================= */
+
+function toggleLibraryFavorite(id){
+
+  const favorites = JSON.parse(
+    localStorage.getItem(
+      'creatividadDocente_libraryFavorites'
+    ) || '[]'
+  );
+
+  const index = favorites.indexOf(id);
+
+  if(index === -1){
+
+    favorites.push(id);
+
+    toast('⭐ Contenido agregado a favoritos.');
+
+  }else{
+
+    favorites.splice(index,1);
+
+    toast('Contenido eliminado de favoritos.');
+
+  }
+
+  localStorage.setItem(
+    'creatividadDocente_libraryFavorites',
+    JSON.stringify(favorites)
+  );
+
+  /*
+   * Volvemos a renderizar respetando los filtros
+   * que estén actualmente seleccionados.
+   */
+  filterLibrary();
+
+}
+
+window.toggleLibraryFavorite = toggleLibraryFavorite;  
+
+/* =========================================================
+   COPIAR PDA SELECCIONADOS DESDE LA BIBLIOTECA
+   ========================================================= */
+
+function copySelectedLibraryPDAs(id){
+
+  const card = document
+    .querySelector(`.library-card button[onclick*="copySelectedLibraryPDAs('${id}')"]`)
+    ?.closest('.library-card');
+
+  if(!card){
+    toast('No se encontró la tarjeta del contenido.');
+    return;
+  }
+
+  const selected = [
+    ...card.querySelectorAll('.library-pda-checkbox:checked')
+  ]
+    .map(input => input.value)
+    .filter(Boolean);
+
+  if(!selected.length){
+    toast('Selecciona al menos un PDA para copiar.');
+    return;
+  }
+
+  const text = selected
+    .map((pda, index) => `${index + 1}. ${pda}`)
+    .join('\n\n');
+
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      toast(
+        selected.length === 1
+          ? '✓ PDA copiado correctamente.'
+          : `✓ ${selected.length} PDA copiados correctamente.`
+      );
+    })
+    .catch(() => {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try{
+        document.execCommand('copy');
+        toast(
+          selected.length === 1
+            ? '✓ PDA copiado correctamente.'
+            : `✓ ${selected.length} PDA copiados correctamente.`
+        );
+      }catch(error){
+        toast('No se pudo copiar el contenido.');
+      }
+      textarea.remove();
+    });
+}
+
+window.copySelectedLibraryPDAs = copySelectedLibraryPDAs;
+
 function gradeNum(){return Number((grade?.value.match(/\d+/)||['1'])[0])}
 function currentData(){return dataFor(phaseByGrade[gradeNum()]||3)}
 function itemsFor(){const g=gradeNum(),data=currentData();return data?.[field?.value]?.grades?.[g]||[]}
@@ -1239,4 +1962,1074 @@ window.mostrarMisPlaneaciones=function(){
   }
 
 };
+})();
+/* =========================================================
+   PROYECTOS — ASISTENTE DE CREACIÓN
+   ========================================================= */
+
+(function(){
+
+  'use strict';
+
+  /* ---------------------------------------------------------
+     NUEVO PROYECTO
+     --------------------------------------------------------- */
+
+  window.newProject = function(){
+
+    const projectsList = document.getElementById('projectsListView');
+    const newProjectView = document.getElementById('newProjectView');
+
+    if(!projectsList || !newProjectView){
+      console.warn('No se encontró la interfaz de nuevo proyecto.');
+      return;
+    }
+
+    projectsList.style.display = 'none';
+    newProjectView.style.display = 'block';
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+
+    /* Limpiar problemática */
+    const problem = document.getElementById('projectProblem');
+
+    if(problem){
+      problem.value = '';
+    }
+
+    /* Restablecer campos formativos */
+    document
+      .querySelectorAll('input[name="projectField"]')
+      .forEach(input => {
+        input.checked = false;
+      });
+
+    /* Restablecer mensaje */
+    const message = document.getElementById('projectFieldMessage');
+
+    if(message){
+      message.textContent =
+        'Selecciona al menos un campo formativo para continuar.';
+
+      message.style.background = '#f8fafc';
+      message.style.color = '#64748b';
+    }
+
+  };
+
+
+  /* ---------------------------------------------------------
+     CANCELAR NUEVO PROYECTO
+     --------------------------------------------------------- */
+
+  window.cancelNewProject = function(){
+
+    const projectsList = document.getElementById('projectsListView');
+    const newProjectView = document.getElementById('newProjectView');
+
+    if(!projectsList || !newProjectView){
+      return;
+    }
+
+    newProjectView.style.display = 'none';
+    projectsList.style.display = 'block';
+
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+
+  };
+
+
+  /* ---------------------------------------------------------
+     OBTENER CAMPOS FORMATIVOS SELECCIONADOS
+     --------------------------------------------------------- */
+
+  window.getSelectedProjectFields = function(){
+
+    return [
+      ...document.querySelectorAll(
+        'input[name="projectField"]:checked'
+      )
+    ].map(input => input.value);
+
+  };
+
+
+  /* ---------------------------------------------------------
+     VALIDAR PASO 1
+     --------------------------------------------------------- */
+
+  window.validateProjectStep1 = function(){
+
+    const problem =
+      document.getElementById('projectProblem');
+
+    const grade =
+      document.getElementById('newProjectGrade');
+
+    const phase =
+      document.getElementById('newProjectPhase');
+
+    const fields =
+      window.getSelectedProjectFields();
+
+    const message =
+      document.getElementById('projectFieldMessage');
+
+
+    /* Problemática */
+
+    if(!problem || !problem.value.trim()){
+
+      alert(
+        'Primero describe la problemática que deseas trabajar.'
+      );
+
+      if(problem){
+        problem.focus();
+      }
+
+      return false;
+    }
+
+
+    /* Campos formativos */
+
+    if(fields.length === 0){
+
+      if(message){
+
+        message.textContent =
+          '⚠️ Selecciona al menos un campo formativo para continuar.';
+
+        message.style.background = '#fff7ed';
+        message.style.color = '#c2410c';
+
+      }
+
+      return false;
+    }
+
+
+    /* Datos mínimos */
+
+    if(!grade || !phase){
+
+      alert(
+        'No se encontraron los datos del grupo.'
+      );
+
+      return false;
+    }
+
+
+    return true;
+
+  };
+
+
+  /* ---------------------------------------------------------
+     GENERAR PROPUESTA CURRICULAR
+     --------------------------------------------------------- */
+
+  window.generateProjectCurriculum = function(){
+
+  if(!window.validateProjectStep1()){
+    return;
+  }
+
+  const problem =
+    document.getElementById('projectProblem').value.trim();
+
+  const gradeText =
+    document.getElementById('newProjectGrade').value;
+
+  const phaseText =
+    document.getElementById('newProjectPhase').value;
+
+  const duration =
+    document.getElementById('newProjectDuration').value;
+
+  const scenario =
+    document.getElementById('newProjectScenario').value;
+
+  const fields =
+    window.getSelectedProjectFields();
+
+  const gradeMatch = gradeText.match(/\d+/);
+  const grade = gradeMatch ? gradeMatch[0] : '';
+
+  const phaseMatch = phaseText.match(/\d+/);
+  const phaseNumber = phaseMatch ? phaseMatch[0] : '';
+
+  const curriculum =
+    window[`PLANEAnEM_FASE_${phaseNumber}`];
+
+  if(!curriculum){
+
+    alert(
+      `No se encontró la base curricular correspondiente a ${phaseText}.`
+    );
+
+    console.error(
+      `No existe window.PLANEAnEM_FASE_${phaseNumber}`
+    );
+
+    return;
+  }
+
+  const phaseData =
+    curriculum[`FASE ${phaseNumber}`];
+
+  if(!phaseData){
+
+    alert(
+      `No se encontró la información de ${phaseText}.`
+    );
+
+    return;
+  }
+
+  const curricularProposal = [];
+
+  fields.forEach(field => {
+
+    const fieldData = phaseData[field];
+
+    if(!fieldData){
+      return;
+    }
+
+    const grades =
+      fieldData.grades || {};
+
+    const gradeData =
+      grades[grade] || [];
+
+    if(!Array.isArray(gradeData)){
+      return;
+    }
+
+    curricularProposal.push({
+
+      field: field,
+
+      items: gradeData.map((item, index) => ({
+
+        id: `${phaseNumber}-${grade}-${field}-${index}`,
+
+        content: item.content || '',
+
+        pda: item.pda || '',
+
+        selected: false
+
+      }))
+
+    });
+
+  });
+
+
+  window.currentProjectDraft = {
+
+    problem: problem,
+
+    grade: gradeText,
+
+    gradeNumber: grade,
+
+    phase: phaseText,
+
+    phaseNumber: phaseNumber,
+
+    duration: duration,
+
+    scenario: scenario,
+
+    fields: fields,
+
+    curricularProposal: curricularProposal,
+
+    createdAt: new Date().toISOString()
+
+  };
+
+
+  console.log(
+    'Propuesta curricular obtenida:',
+    window.currentProjectDraft
+  );
+
+
+  renderProjectCurriculumProposal();
+
+};
+
+
+  /* ---------------------------------------------------------
+     SEGURIDAD PARA MOSTRAR TEXTO EN HTML
+     --------------------------------------------------------- */
+/* ---------------------------------------------------------
+   MOSTRAR PROPUESTA DE VINCULACIÓN CURRICULAR
+   --------------------------------------------------------- */
+
+window.renderProjectCurriculumProposal = function(){
+
+  const view = document.getElementById('newProjectView');
+
+  if(!view){
+    console.warn('No se encontró #newProjectView.');
+    return;
+  }
+
+  const draft = window.currentProjectDraft;
+
+  if(!draft || !Array.isArray(draft.curricularProposal)){
+    console.warn('No existe una propuesta curricular para mostrar.');
+    return;
+  }
+
+  const escapeHTML = value => String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+
+
+  const totalItems = draft.curricularProposal.reduce(
+    (total, group) => total + (group.items?.length || 0),
+    0
+  );
+
+
+  view.innerHTML = `
+
+    <div class="project-ai-header">
+
+      <div>
+        <span class="project-ai-badge">✨ Vinculación curricular</span>
+
+        <h2>
+          Propuesta de vinculación curricular
+        </h2>
+
+        <p>
+          Revisa los contenidos y PDA relacionados con tu problemática.
+          Selecciona los que deseas utilizar para desarrollar el proyecto.
+        </p>
+      </div>
+
+    </div>
+
+
+    <div class="project-problem-summary">
+
+      <div class="summary-label">
+        Problemática planteada
+      </div>
+
+      <div class="summary-problem">
+        ${escapeHTML(draft.problem)}
+      </div>
+
+      <div class="summary-meta">
+
+        <span>🎓 ${escapeHTML(draft.grade)}</span>
+
+        <span>📘 ${escapeHTML(draft.phase)}</span>
+
+        <span>📅 ${escapeHTML(draft.duration)}</span>
+
+        <span>📍 ${escapeHTML(draft.scenario)}</span>
+
+      </div>
+
+    </div>
+
+
+    <div class="curriculum-proposal-header">
+
+      <div>
+
+        <h3>
+          Contenidos curriculares disponibles
+        </h3>
+
+        <p>
+          La propuesta se construyó únicamente con los campos formativos
+          que seleccionaste.
+        </p>
+
+      </div>
+
+      <div class="curriculum-total">
+
+        ${totalItems}
+
+        <small>
+          contenidos
+        </small>
+
+      </div>
+
+    </div>
+
+
+    <div class="project-curriculum-list">
+
+      ${
+        draft.curricularProposal.map(group => `
+
+          <section class="project-field-group">
+
+            <div class="project-field-title">
+
+              <span class="field-icon">📚</span>
+
+              <div>
+
+                <h3>
+                  ${escapeHTML(group.field)}
+                </h3>
+
+                <small>
+                  Selecciona los contenidos que formarán parte del proyecto.
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <div class="project-curriculum-items">
+
+              ${
+                (group.items || []).map(item => `
+
+                  <label class="project-curriculum-item">
+
+                    <input
+                      type="checkbox"
+                      class="project-curriculum-check"
+                      data-id="${escapeHTML(item.id)}"
+                      onchange="updateSelectedProjectCurriculum()"
+                    >
+
+                    <div class="curriculum-item-content">
+
+                      <div class="curriculum-item-label">
+                        CONTENIDO
+                      </div>
+
+                      <div class="curriculum-item-text">
+                        ${escapeHTML(item.content)}
+                      </div>
+
+                      <div class="curriculum-item-label pda-label">
+                        PDA
+                      </div>
+
+                      <div class="curriculum-item-pda">
+                        ${escapeHTML(item.pda)}
+                      </div>
+
+                    </div>
+
+                  </label>
+
+                `).join('')
+              }
+
+            </div>
+
+          </section>
+
+        `).join('')
+      }
+
+    </div>
+
+
+    <div class="project-selection-footer">
+
+      <div>
+
+        <strong>
+          <span id="projectSelectedCurriculum">0</span>
+          contenidos seleccionados
+        </strong>
+
+        <p>
+          Puedes modificar esta selección antes de continuar.
+        </p>
+
+      </div>
+
+      <div class="project-actions">
+
+        <button
+          type="button"
+          class="btn secondary"
+          onclick="newProject()"
+        >
+          ← Volver
+        </button>
+
+        <button
+          type="button"
+          class="btn purple"
+          onclick="continueProjectFromCurriculum()"
+        >
+          Continuar con el proyecto →
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+  updateSelectedProjectCurriculum();
+
+};
+/* ---------------------------------------------------------
+   ACTUALIZAR SELECCIÓN DE CONTENIDOS CURRICULARES
+   --------------------------------------------------------- */
+
+window.updateSelectedProjectCurriculum = function(){
+
+  const draft = window.currentProjectDraft;
+
+  if(!draft || !Array.isArray(draft.curricularProposal)){
+    return;
+  }
+
+  const checkedIds = new Set(
+    [...document.querySelectorAll('.project-curriculum-check:checked')]
+      .map(input => input.dataset.id)
+  );
+
+
+  let selectedCount = 0;
+
+
+  draft.curricularProposal.forEach(group => {
+
+    (group.items || []).forEach(item => {
+
+      item.selected = checkedIds.has(item.id);
+
+      if(item.selected){
+        selectedCount++;
+      }
+
+    });
+
+  });
+
+
+  const counter =
+    document.getElementById('projectSelectedCurriculum');
+
+  if(counter){
+    counter.textContent = selectedCount;
+  }
+
+
+  const continueButton =
+    document.querySelector(
+      '.project-selection-footer .btn.purple'
+    );
+
+  if(continueButton){
+
+    continueButton.disabled = selectedCount === 0;
+
+    continueButton.style.opacity =
+      selectedCount === 0 ? '.55' : '1';
+
+    continueButton.style.cursor =
+      selectedCount === 0 ? 'not-allowed' : 'pointer';
+
+  }
+
+
+  console.log(
+    'Contenidos curriculares seleccionados:',
+    selectedCount
+  );
+
+};
+/* ---------------------------------------------------------
+   CONTINUAR CON EL PROYECTO DESDE LA VINCULACIÓN CURRICULAR
+   --------------------------------------------------------- */
+
+window.continueProjectFromCurriculum = function(){
+
+  const draft = window.currentProjectDraft;
+
+  if(!draft || !Array.isArray(draft.curricularProposal)){
+    toast('No hay una propuesta curricular disponible.');
+    return;
+  }
+
+
+  // Recuperar los contenidos y PDA seleccionados
+  const selectedCurriculum = [];
+
+
+  draft.curricularProposal.forEach(group => {
+
+    (group.items || []).forEach(item => {
+
+      if(item.selected){
+
+        selectedCurriculum.push({
+          field: group.field,
+          content: item.content,
+          pda: item.pda
+        });
+
+      }
+
+    });
+
+  });
+
+
+  // Es necesario seleccionar al menos un contenido
+  if(selectedCurriculum.length === 0){
+
+    toast(
+      'Selecciona al menos un contenido y PDA para continuar.'
+    );
+
+    return;
+  }
+
+
+  // Guardamos la selección aprobada por el docente
+  draft.selectedCurriculum = selectedCurriculum;
+
+
+  // Crear estructura inicial del proyecto
+  draft.project = {
+
+    title: '',
+
+    purpose: '',
+
+    product: '',
+
+    justification: '',
+
+    stages: []
+
+  };
+
+
+  // Renderizar el siguiente paso
+  renderProjectBuilder();
+
+};
+/* ---------------------------------------------------------
+   CONSTRUCTOR DEL PROYECTO
+   --------------------------------------------------------- */
+
+window.renderProjectBuilder = function(){
+
+  const view = document.getElementById('newProjectView');
+
+  const draft = window.currentProjectDraft;
+
+  if(!view || !draft){
+    toast('No hay información del proyecto disponible.');
+    return;
+  }
+
+
+  const selectedCurriculum =
+    draft.selectedCurriculum || [];
+
+
+  view.innerHTML = `
+
+    <div class="project-ai-header">
+
+      <div>
+
+        <span class="project-ai-badge">
+          ✨ Construcción del proyecto
+        </span>
+
+        <h2>
+          Diseñemos la experiencia de aprendizaje
+        </h2>
+
+        <p>
+          A partir de la problemática y de los contenidos curriculares
+          seleccionados, completa y ajusta la propuesta de tu proyecto.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="project-problem-summary">
+
+      <div class="summary-label">
+        Problemática
+      </div>
+
+      <div class="summary-problem">
+        ${escapeProjectHTML(draft.problem)}
+      </div>
+
+      <div class="summary-meta">
+
+        <span>
+          🎓 ${escapeProjectHTML(draft.grade)}
+        </span>
+
+        <span>
+          📘 ${escapeProjectHTML(draft.phase)}
+        </span>
+
+        <span>
+          📅 ${escapeProjectHTML(draft.duration)}
+        </span>
+
+        <span>
+          📍 ${escapeProjectHTML(draft.scenario)}
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <section class="project-builder-section">
+
+      <div class="project-builder-section-header">
+
+        <div>
+
+          <span class="project-section-number">
+            1
+          </span>
+
+          <div>
+
+            <h3>
+              Datos principales del proyecto
+            </h3>
+
+            <p>
+              Puedes escribirlos tú o posteriormente utilizar el generador.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="project-builder-grid">
+
+        <div class="project-builder-field">
+
+          <label>
+            Nombre del proyecto
+          </label>
+
+          <input
+            type="text"
+            id="projectBuilderTitle"
+            placeholder="Ej. Creamos un jardín para nuestra escuela"
+            value=""
+          >
+
+        </div>
+
+
+        <div class="project-builder-field">
+
+          <label>
+            Producto final
+          </label>
+
+          <input
+            type="text"
+            id="projectBuilderProduct"
+            placeholder="¿Qué elaborarán o realizarán las y los estudiantes?"
+            value=""
+          >
+
+        </div>
+
+
+        <div class="project-builder-field project-builder-full">
+
+          <label>
+            Propósito del proyecto
+          </label>
+
+          <textarea
+            id="projectBuilderPurpose"
+            rows="4"
+            placeholder="¿Qué se espera que logren las y los estudiantes mediante este proyecto?"
+          ></textarea>
+
+        </div>
+
+
+        <div class="project-builder-field project-builder-full">
+
+          <label>
+            Justificación
+          </label>
+
+          <textarea
+            id="projectBuilderJustification"
+            rows="4"
+            placeholder="¿Por qué es importante trabajar esta problemática con el grupo?"
+          ></textarea>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="project-builder-section">
+
+      <div class="project-builder-section-header">
+
+        <div>
+
+          <span class="project-section-number">
+            2
+          </span>
+
+          <div>
+
+            <h3>
+              Vinculación curricular aprobada
+            </h3>
+
+            <p>
+              Estos son los contenidos y PDA que seleccionaste.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="project-approved-curriculum">
+
+        ${
+          selectedCurriculum.length
+          ? selectedCurriculum.map((item,index) => `
+
+              <article class="approved-curriculum-card">
+
+                <div class="approved-curriculum-number">
+                  ${index + 1}
+                </div>
+
+                <div class="approved-curriculum-content">
+
+                  <div class="curriculum-item-label">
+                    ${escapeProjectHTML(item.field)}
+                  </div>
+
+                  <div class="curriculum-item-text">
+                    ${escapeProjectHTML(item.content)}
+                  </div>
+
+                  <div class="curriculum-item-label pda-label">
+                    PDA
+                  </div>
+
+                  <div class="curriculum-item-pda">
+                    ${escapeProjectHTML(item.pda)}
+                  </div>
+
+                </div>
+
+              </article>
+
+            `).join('')
+          : `
+            <div class="project-empty-state">
+              No hay contenidos curriculares seleccionados.
+            </div>
+          `
+        }
+
+      </div>
+
+    </section>
+
+
+    <section class="project-builder-section">
+
+      <div class="project-builder-section-header">
+
+        <div>
+
+          <span class="project-section-number">
+            3
+          </span>
+
+          <div>
+
+            <h3>
+              Etapas del proyecto
+            </h3>
+
+            <p>
+              Aquí construiremos las etapas que posteriormente podrán
+              convertirse en una o varias planeaciones.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="project-stage-empty">
+
+        <div class="project-stage-empty-icon">
+          🧩
+        </div>
+
+        <h3>
+          Aún no hay etapas
+        </h3>
+
+        <p>
+          En el siguiente paso podremos generar las etapas del proyecto
+          a partir de la problemática y la vinculación curricular.
+        </p>
+
+        <button
+          type="button"
+          class="btn purple"
+          onclick="generateProjectStages()"
+        >
+          ✨ Generar etapas del proyecto
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <div class="project-selection-footer">
+
+      <div>
+
+        <strong>
+          Proyecto en construcción
+        </strong>
+
+        <p>
+          Toda la información podrá modificarse posteriormente.
+        </p>
+
+      </div>
+
+
+      <div class="project-actions">
+
+        <button
+          type="button"
+          class="btn secondary"
+          onclick="renderProjectCurriculumProposal()"
+        >
+          ← Volver
+        </button>
+
+        <button
+          type="button"
+          class="btn purple"
+          onclick="saveProjectDraft()"
+        >
+          💾 Guardar proyecto
+        </button>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  /* Recuperar información existente si ya había sido capturada */
+
+  const title =
+    document.getElementById('projectBuilderTitle');
+
+  const product =
+    document.getElementById('projectBuilderProduct');
+
+  const purpose =
+    document.getElementById('projectBuilderPurpose');
+
+  const justification =
+    document.getElementById('projectBuilderJustification');
+
+
+  if(draft.project){
+
+    if(title){
+      title.value = draft.project.title || '';
+    }
+
+    if(product){
+      product.value = draft.project.product || '';
+    }
+
+    if(purpose){
+      purpose.value = draft.project.purpose || '';
+    }
+
+    if(justification){
+      justification.value =
+        draft.project.justification || '';
+    }
+
+  }
+
+};
+  function escapeProjectHTML(value){
+
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+  }
+
+
 })();
