@@ -42,6 +42,77 @@
 .saved-plan-option:hover{border-color:#7657d7;background:#faf8ff;transform:translateY(-1px)}.saved-plan-option-icon{width:42px;height:42px;border-radius:11px;background:#eeeaff;display:grid;place-items:center;font-size:22px;flex:none}.saved-plan-option-body{min-width:0;flex:1}.saved-plan-option-body strong{display:block;color:#273043;font-size:14px;margin-bottom:5px}.saved-plan-option-body p{margin:0;color:#697386;font-size:12px;line-height:1.45}.saved-plan-option-arrow{color:#6844d9;font-weight:900;font-size:18px}.saved-plan-empty{text-align:center;padding:35px 15px;color:#70798a}.saved-plan-empty div{font-size:38px;margin-bottom:8px}.saved-plan-empty h3{color:#273043;margin:5px 0}.saved-plan-empty p{margin:0 0 15px;font-size:13px}
 @media(max-width:600px){.saved-plan-picker{padding:18px;border-radius:18px}.saved-plan-picker-head h2{font-size:18px}}
 </style>
+
+<style>
+/* Ocultar selector duplicado: el tipo se elige desde el menú izquierdo. */
+.instrument-type-field{display:none !important}
+</style>
+
+<style id="attendance-month-css">
+
+/* ===== ASISTENCIA MENSUAL ===== */
+.attendance-toolbar{padding:18px;display:grid;grid-template-columns:1fr .6fr 1fr auto;gap:12px;align-items:end;margin-bottom:18px}
+.attendance-field{display:flex;flex-direction:column;gap:6px}
+.attendance-field label{font-weight:700;font-size:12px}
+.attendance-field input,.attendance-field select{border:1px solid #dfe2e8;border-radius:10px;padding:11px 12px;background:#fff;font:inherit}
+.attendance-actions{display:flex;gap:8px;flex-wrap:wrap}
+.attendance-card{padding:22px;margin-bottom:18px}
+.attendance-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:16px}
+.attendance-head h2{margin:4px 0}.attendance-head p{margin:0;color:#737987;font-size:13px;line-height:1.5}
+.attendance-help{padding:14px 16px;background:#faf8ff;border:1px solid #e6defd;border-radius:12px;color:#5543a1;font-size:12px;line-height:1.6;margin-bottom:18px}
+.attendance-students{display:grid;grid-template-columns:repeat(3,minmax(220px,1fr));gap:12px;margin-top:16px}
+.student-box{display:flex;align-items:center;gap:10px;border:1px solid #e1e3e8;background:#fff;border-radius:12px;padding:10px}
+.student-number{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#f0ecff;color:#6541cc;font-weight:800;font-size:12px;flex:none}
+.student-box input{min-width:0;flex:1;border:0;outline:0;background:transparent;font:inherit;font-weight:600}
+.student-remove{border:0;background:#fff0f0;color:#c43d3d;border-radius:8px;padding:7px 9px;cursor:pointer}
+.student-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.attendance-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.attendance-stat{background:#fff;border:1px solid #e5e6eb;border-radius:14px;padding:14px;display:flex;align-items:center;gap:10px}
+.attendance-stat>span{font-size:22px}.attendance-stat strong{display:block;font-size:22px}.attendance-stat small{color:#737987}
+.attendance-month-wrap{overflow:auto;border:1px solid #e1e4ea;border-radius:14px;background:#fff}
+.attendance-month{border-collapse:separate;border-spacing:0;min-width:1120px;width:max-content}
+.attendance-month th,.attendance-month td{border-right:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;text-align:center;padding:0}
+.attendance-month thead th{height:42px;background:#f7f7fa;font-size:11px;color:#626a78;position:sticky;top:0;z-index:3}
+.attendance-month .student-col{position:sticky;left:0;z-index:5;background:#f7f7fa;text-align:left;padding:9px 12px;min-width:235px}
+.attendance-month .student-name-cell{position:sticky;left:0;z-index:2;background:#fff;text-align:left;padding:9px 12px;font-weight:700;min-width:235px}
+.attendance-day{width:42px;min-width:42px}.attendance-day small{display:block;font-size:9px;color:#8a909b}
+.attendance-cell{width:42px;height:44px;background:#fff;cursor:pointer;font-weight:900;font-size:12px;user-select:none}
+.attendance-cell:hover{background:#f4f1ff}
+.attendance-cell.status-P{background:#edf9f0;color:#18753b}.attendance-cell.status-R{background:#fff7df;color:#9a6a00}
+.attendance-cell.status-A{background:#fff0f0;color:#bd3030}.attendance-cell.status-J{background:#eef4ff;color:#315fa8}
+.attendance-cell.status-empty{color:#a1a6b0}
+.attendance-percent{font-weight:800;padding:0 10px;min-width:70px}
+.attendance-legend{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0 0;color:#656c79;font-size:12px}
+.attendance-legend span{display:inline-flex;align-items:center;gap:5px}.attendance-dot{width:12px;height:12px;border-radius:4px;display:inline-block}
+.attendance-dot.p{background:#edf9f0;border:1px solid #b9e5c7}.attendance-dot.r{background:#fff7df;border:1px solid #efd48b}
+.attendance-dot.a{background:#fff0f0;border:1px solid #efb1b1}.attendance-dot.j{background:#eef4ff;border:1px solid #b8cdef}
+.attendance-empty{text-align:center;padding:42px 20px;color:#737987}.attendance-empty>div{font-size:42px}.attendance-empty h3{margin:6px}
+.attendance-month-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.attendance-month-title h2{margin:0}
+.attendance-month-badge{padding:6px 10px;border-radius:20px;background:#f0ecff;color:#6541cc;font-size:11px;font-weight:800}
+
+.attendance-chart-button{display:inline-flex;align-items:center;gap:7px}
+.attendance-chart-overlay{position:fixed;inset:0;background:rgba(25,29,42,.48);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}
+.attendance-chart-modal{width:min(900px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:20px;box-shadow:0 25px 70px rgba(0,0,0,.2);padding:24px}
+.attendance-chart-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:18px}
+.attendance-chart-head h2{margin:3px 0 5px}.attendance-chart-head p{margin:0;color:#737987;font-size:13px}
+.attendance-chart-close{border:0;background:#f1f2f6;border-radius:10px;width:38px;height:38px;font-size:22px;cursor:pointer}
+.attendance-chart-overall{display:grid;grid-template-columns:180px 1fr;gap:22px;align-items:center;padding:18px;background:#faf9ff;border:1px solid #e8e2ff;border-radius:16px;margin-bottom:20px}
+.attendance-donut{width:145px;height:145px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#6844d9 0deg,#6844d9 0deg,#ececf2 0deg,#ececf2 360deg);margin:auto}
+.attendance-donut::after{content:'';width:104px;height:104px;background:#fff;border-radius:50%;grid-area:1/1}
+.attendance-donut span{grid-area:1/1;z-index:1;font-size:25px;font-weight:900;color:#273043}
+.attendance-chart-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:12px;color:#697386}
+.attendance-chart-legend b{color:#273043}.attendance-bars{display:flex;flex-direction:column;gap:13px}
+.attendance-bar-row{display:grid;grid-template-columns:minmax(150px,220px) 1fr 58px;gap:10px;align-items:center}
+.attendance-bar-name{font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.attendance-bar-track{height:18px;background:#ececf2;border-radius:99px;overflow:hidden}.attendance-bar-fill{height:100%;width:0;border-radius:99px;background:#6844d9;transition:width .5s ease}
+.attendance-bar-value{text-align:right;font-weight:900;font-size:13px}
+.attendance-chart-empty{text-align:center;padding:30px;color:#737987}
+@media(max-width:650px){.attendance-chart-overall{grid-template-columns:1fr}.attendance-bar-row{grid-template-columns:1fr 55px}.attendance-bar-track{grid-column:1/2}.attendance-bar-value{grid-column:2;grid-row:1/3}.attendance-bar-name{grid-column:1}}
+
+@media(max-width:1000px){.attendance-toolbar{grid-template-columns:1fr 1fr}.attendance-stats{grid-template-columns:repeat(3,1fr)}.attendance-students{grid-template-columns:repeat(2,minmax(220px,1fr))}}
+@media(max-width:650px){.attendance-toolbar{grid-template-columns:1fr}.attendance-stats{grid-template-columns:repeat(2,1fr)}.attendance-students{grid-template-columns:1fr}.attendance-head{flex-direction:column}}
+
+</style>
 </head>
 <body>
 <div class="app">
@@ -58,9 +129,10 @@
     
     <a href="#" data-action="library" onclick="showView('library');return false">💡 <span>Ideas para planear</span></a>
     <div class="nav-title">Herramientas</div>
-    <a href="#" data-action="ai">✣ <span>Generador con IA</span><b class="badge">Nuevo</b></a>
-    <a href="#" data-action="rubrics">▧ <span>Rúbricas</span></a>
+    <a href="#" data-action="attendance" onclick="showView('attendance');return false">🗓 <span>Registro de asistencia</span><b class="badge">Nuevo</b></a>
+    <a href="#" data-action="rubrics">▧ <span>Instrumentos de evaluación</span></a>
     <a href="#" data-action="eval">☑ <span>Evaluación formativa</span></a>
+    
     <a href="#" data-action="resources">▱ <span>Recursos y materiales</span></a>
     <div class="nav-title">Mi cuenta</div>
     <a href="#">♙ <span>Perfil</span></a>
@@ -91,51 +163,47 @@
 </button>
     </div>
     <div class="card action">
-      <div><div class="round purple">♟</div><h3>Proyectos</h3><p>Diseña proyectos comunitarios y de aula.</p></div>
-      <button class="btn purple" onclick="toast('Módulo de proyectos seleccionado.')">Crear proyecto →</button>
+      <div><div class="round purple">💡</div><h3>Ideas para planear</h3><p>Encuentra estrategias, actividades y propuestas para enriquecer tus planeaciones.</p></div>
+      <button class="btn purple" onclick="showView('library')">Explorar ideas →</button>
     </div>
     <div class="card ai">
-      <div><small style="background:#7b60df;padding:5px 9px;border-radius:20px">Asistente con IA</small><h3 style="font-size:21px;margin-top:18px">Tu aliado para<br>planear mejor</h3><p>Describe tu idea y la IA te ayudará a crear una planeación completa.</p></div>
-      <div class="robot">🤖</div><button class="btn" onclick="toast('Asistente con IA: escribe tu idea para comenzar.')">✦ &nbsp; Usar IA</button>
+      <div><small style="background:#7b60df;padding:5px 9px;border-radius:20px">Instrumentos de evaluación</small><h3 style="font-size:21px;margin-top:18px">Evalúa mejor<br>el aprendizaje</h3><p>Crea rúbricas, listas de cotejo, guías de observación y otros instrumentos vinculados con tu planeación.</p></div>
+      <div class="robot">📊</div><button class="btn" onclick="showView('rubrics')">▧ &nbsp; Crear instrumento</button>
     </div>
   </div>
 
   <div class="lower">
     <div>
       <div class="card assistant" id="assistant">
-        <h3>Asistente para crear tu planeación</h3><p>Sigue los pasos para generar una planeación completa y personalizada.</p>
+        <h3>Asistente para crear tu planeación</h3><p>Para comenzar una nueva planeación, entra al apartado <strong>Nueva planeación</strong> del menú principal y completa los datos paso a paso.</p>
         <div class="steps">
           <div class="step active"><div class="circle">1</div><b>Datos generales</b></div><div class="line"></div>
-          <div class="step"><div class="circle">2</div><b>Contenido</b></div><div class="line"></div>
-          <div class="step"><div class="circle">3</div><b>PDA</b></div><div class="line"></div>
-          <div class="step"><div class="circle">4</div><b>Contexto</b></div><div class="line"></div>
-          <div class="step"><div class="circle">5</div><b>Metodología</b></div><div class="line"></div>
-          <div class="step"><div class="circle">6</div><b>Generar</b></div>
+          <div class="step"><div class="circle">2</div><b>Contenido y PDA</b></div><div class="line"></div>
+          <div class="step"><div class="circle">3</div><b>Contexto</b></div><div class="line"></div>
+          <div class="step"><div class="circle">4</div><b>Generar</b></div>
         </div>
         <div class="form">
           <div class="field"><label>Grado</label><select><option>1°</option><option>2°</option><option>3°</option><option>4°</option><option>5°</option><option selected>6°</option></select></div>
           <div class="field"><label>Fase</label><select><option>3</option><option>4</option><option selected>5</option></select></div>
           <div class="field"><label>Campo formativo</label><select><option>Lenguajes</option><option>Saberes y pensamiento científico</option><option>Ética, naturaleza y sociedades</option><option>De lo humano y lo comunitario</option></select></div>
         </div>
-        <div class="form-actions"><button class="link" onclick="toast('Proceso cancelado.')">Cancelar</button><button class="next" onclick="nextStep()">Siguiente →</button></div>
+        <div class="form-actions"><button class="link" onclick="toast('Para iniciar una nueva planeación, selecciona Nueva planeación en el menú principal.')">Cancelar</button><button class="next" onclick="showView('nueva')">Ir a Nueva planeación →</button></div>
       </div>
 
       <div class="resources">
         <h3>Explora recursos para tu práctica docente</h3>
         <div class="resource-grid">
           <div class="card resource"><strong>Ideas para planear</strong><p>Encuentra estrategias, actividades y propuestas para enriquecer tus planeaciones.</p><a href="#" onclick="showView('library');return false">Explorar →</a></div>
-          <div class="card resource"><strong>Rúbricas</strong><p>Descarga rúbricas listas para evaluar aprendizajes.</p><a href="#" onclick="showView('rubrics');return false">Ver rúbricas →</a></div>
           <div class="card resource"><strong>Recursos y materiales</strong><p>Encuentra materiales listos para tus clases.</p><a href="#" onclick="toast('Recursos y materiales');return false">Ver recursos →</a></div>
         </div>
       </div>
     </div>
 
     <aside class="card recent">
-      <div class="recent-head"><h3>Recientes</h3><a href="#" onclick="toast('Mostrando todas las planeaciones');return false">Ver todas</a></div>
-      <div class="recent-item"><div class="docicon">▤</div><div><strong>Cuidemos el agua de nuestra comunidad</strong><small>6° · Español · 02/05/2025</small></div></div>
-      <div class="recent-item"><div class="docicon" style="background:#e8f7ef;color:#0a9b61">▤</div><div><strong>Historias que nos conectan</strong><small>5° · Lenguajes · 30/04/2025</small></div></div>
-      <div class="recent-item"><div class="docicon" style="background:#fff0df;color:#e88912">▤</div><div><strong>Mi comunidad y sus cambios</strong><small>4° · Saberes y pensamiento científico</small></div></div>
-      <div class="recent-item"><div class="docicon" style="background:#eee9ff;color:#6340d5">▤</div><div><strong>La energía en nuestras vidas</strong><small>6° · Saberes y pensamiento científico</small></div></div>
+      <div class="recent-head"><h3>Recientes</h3><a href="#planes" onclick="showView('planes');return false">Ver todas</a></div>
+      <div id="recentPlansHome">
+        <div class="recent-item"><div class="docicon">▤</div><div><strong>Cargando tus planeaciones...</strong><small>Consultando Mis planeaciones</small></div></div>
+      </div>
     </aside>
   </div>
 
@@ -655,41 +723,180 @@
 
 </section>
 
+
+<!-- =========================================================
+     REGISTRO DE ASISTENCIA
+     ========================================================= -->
+
+
 <style>
-.rubrics-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:22px;align-items:start}.rubrics-menu{padding:18px;position:sticky;top:20px}.rubrics-menu h3{margin:0 0 14px}.rubric-menu-btn{width:100%;text-align:left;border:0;background:#f7f7fa;padding:13px 14px;border-radius:12px;margin:4px 0;cursor:pointer;font:inherit}.rubric-menu-btn.active{background:#eee9ff;color:#5d36c9;font-weight:700}.rubric-panel{padding:24px;margin-bottom:20px}.rubric-panel-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:20px}.rubric-panel-head h2{margin:4px 0}.rubric-panel-head p{margin:0;color:#69707d}.rubric-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;color:#7557d8}.rubric-badge{padding:7px 11px;border-radius:20px;background:#f0ecff;color:#6541cc;font-weight:800}.rubric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.rubric-grid label{display:flex;flex-direction:column;gap:7px;font-weight:700;font-size:13px}.rubric-grid .full{grid-column:1/-1}.rubric-grid input,.rubric-grid select,.rubric-grid textarea{width:100%;box-sizing:border-box;border:1px solid #dfe2e8;border-radius:10px;padding:11px 12px;background:#fff;font:inherit;font-weight:400}.criteria-builder{margin-top:24px;border-top:1px solid #eee;padding-top:20px}.criteria-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.criteria-head h3{margin:0 0 4px}.criteria-head p{margin:0;color:#737987;font-size:13px}.criterion-row{display:grid;grid-template-columns:1fr 42px;gap:10px;margin-top:12px}.criterion-row input{border:1px solid #dfe2e8;border-radius:10px;padding:11px 12px}.remove-criterion{border:0;border-radius:10px;background:#fff0f0;color:#c43d3d;cursor:pointer}.rubric-actions{display:flex;gap:10px;margin-top:22px}.primary-btn,.secondary-btn{border:0;border-radius:10px;padding:11px 16px;cursor:pointer;font-weight:700}.primary-btn{background:#6847d7;color:white}.secondary-btn{background:#f1f2f6;color:#3f4450}.rubric-plans-list,.saved-rubrics-list{display:grid;gap:10px}.rubric-plan-option,.saved-rubric-card{border:1px solid #e3e5ea;border-radius:13px;padding:15px;background:#fff}.rubric-plan-option{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer}.rubric-plan-option:hover{border-color:#7959db;background:#faf9ff}.rubric-plan-icon{font-size:25px}.rubric-plan-option strong{display:block}.rubric-plan-option small{color:#747987}.saved-rubric-card h3{margin:0 0 6px}.saved-rubric-card p{margin:3px 0;color:#666d79}.saved-rubric-actions{display:flex;gap:8px;margin-top:10px}.rubric-output{padding:24px}.rubric-table-wrap{overflow:auto}.rubric-table{width:100%;border-collapse:collapse;min-width:800px}.rubric-table th,.rubric-table td{border:1px solid #dfe2e8;padding:12px;vertical-align:top;text-align:left}.rubric-table th{background:#f5f3fb}.rubric-table td[contenteditable=true]{background:#fff}.rubric-output-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.rubric-output-head h2{margin:0}.rubric-output-actions{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:800px){.rubrics-layout{grid-template-columns:1fr}.rubrics-menu{position:static}.rubric-grid{grid-template-columns:1fr}.rubric-grid .full{grid-column:auto}.criteria-head{align-items:flex-start;flex-direction:column}}
+/* =========================================================
+   INSTRUMENTOS DE EVALUACIÓN
+   ========================================================= */
+.rubrics-layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:22px;align-items:start}.rubrics-menu{padding:18px;position:sticky;top:20px}.rubrics-menu h3{margin:0 0 8px}.rubrics-menu p{margin:0 0 14px;color:#737987;font-size:12px;line-height:1.45}.rubric-menu-btn{width:100%;text-align:left;border:0;background:#f7f7fa;padding:11px 13px;border-radius:12px;margin:3px 0;cursor:pointer;font:inherit;color:#343a46}.rubric-menu-btn.active{background:#eee9ff;color:#5d36c9;font-weight:800}.rubric-menu-divider{height:1px;background:#ececf1;margin:12px 0}.rubric-panel{padding:24px;margin-bottom:20px}.rubric-panel-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:20px}.rubric-panel-head h2{margin:4px 0}.rubric-panel-head p{margin:0;color:#69707d;line-height:1.5}.rubric-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;color:#7557d8}.rubric-badge{padding:7px 11px;border-radius:20px;background:#f0ecff;color:#6541cc;font-weight:800}.rubric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.rubric-grid label{display:flex;flex-direction:column;gap:7px;font-weight:700;font-size:13px}.rubric-grid .full{grid-column:1/-1}.rubric-grid input,.rubric-grid select,.rubric-grid textarea{width:100%;box-sizing:border-box;border:1px solid #dfe2e8;border-radius:10px;padding:11px 12px;background:#fff;font:inherit;font-weight:400}.criteria-builder{margin-top:24px;border-top:1px solid #eee;padding-top:20px}.criteria-head{display:flex;justify-content:space-between;gap:12px;align-items:center}.criteria-head h3{margin:0 0 4px}.criteria-head p{margin:0;color:#737987;font-size:13px}.criterion-row{display:grid;grid-template-columns:1fr 42px;gap:10px;margin-top:12px}.criterion-row input{border:1px solid #dfe2e8;border-radius:10px;padding:11px 12px}.remove-criterion{border:0;border-radius:10px;background:#fff0f0;color:#c43d3d;cursor:pointer}.rubric-actions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}.primary-btn,.secondary-btn{border:0;border-radius:10px;padding:11px 16px;cursor:pointer;font-weight:700}.primary-btn{background:#6847d7;color:white}.secondary-btn{background:#f1f2f6;color:#3f4450}.rubric-plans-list,.saved-rubrics-list{display:grid;gap:10px}.rubric-plan-option,.saved-rubric-card{border:1px solid #e3e5ea;border-radius:13px;padding:15px;background:#fff}.rubric-plan-option{display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer}.rubric-plan-option:hover{border-color:#7959db;background:#faf9ff}.rubric-plan-icon{font-size:25px}.rubric-plan-option strong{display:block}.rubric-plan-option small{color:#747987}.saved-rubric-card h3{margin:0 0 6px}.saved-rubric-card p{margin:3px 0;color:#666d79}.saved-rubric-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.rubric-output{padding:24px}.instrument-preview{border:1px solid #e1e4ea;border-radius:14px;background:#fff;padding:22px}.instrument-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.instrument-meta div{background:#f7f7fa;border-radius:10px;padding:10px}.instrument-meta span{display:block;color:#737987;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}.instrument-meta b{display:block;margin-top:3px;font-size:12px}.instrument-table-wrap{overflow:auto}.instrument-table{width:100%;border-collapse:collapse;min-width:760px}.instrument-table th,.instrument-table td{border:1px solid #dfe2e8;padding:11px;vertical-align:top;text-align:left}.instrument-table th{background:#f5f3fb}.instrument-table td[contenteditable=true]{background:#fff}.instrument-note{margin-top:16px;padding:13px;border-left:4px solid #6847d7;background:#f8f6ff;color:#535967;line-height:1.5}.instrument-empty{text-align:center;padding:35px 15px;color:#70798a}.instrument-empty div{font-size:38px}.instrument-empty h3{color:#273043;margin:7px 0}.instrument-empty p{margin:0}.plan-context-banner{padding:13px 15px;border:1px solid #e5defd;background:#faf8ff;border-radius:12px;margin-bottom:18px;color:#4e3aa1}.instrument-checks{display:grid;gap:8px;margin-top:14px}.instrument-checks label{display:flex;gap:9px;align-items:flex-start;padding:10px;border:1px solid #e5e6eb;border-radius:9px;background:#fff}.instrument-checks input{margin-top:3px}.rating-options{display:flex;gap:8px;flex-wrap:wrap}.rating-chip{padding:8px 12px;border-radius:20px;background:#f1f2f6;color:#4b5260;font-size:12px;font-weight:700}.rubric-output-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}.rubric-output-head h2{margin:0}.rubric-output-actions{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:900px){.rubrics-layout{grid-template-columns:1fr}.rubrics-menu{position:static}.rubric-grid{grid-template-columns:1fr}.rubric-grid .full{grid-column:auto}.instrument-meta{grid-template-columns:1fr 1fr}}@media(max-width:600px){.instrument-meta{grid-template-columns:1fr}.rubric-panel{padding:18px}}
 </style>
 
+
+<!-- =========================================================
+     REGISTRO DE ASISTENCIA MENSUAL
+     ========================================================= -->
+<section id="attendance" class="planner-view" style="display:none">
+  <div class="page-head">
+    <span>CONTROL DEL GRUPO</span>
+    <h1>Registro de asistencia 🗓</h1>
+    <p>Agrega los nombres de tus alumnos y lleva el registro mensual de todo el grupo.</p>
+  </div>
+
+  <div class="attendance-help">
+    💡 <strong>Primero agrega a tus alumnos.</strong> Cada recuadro es un alumno.
+    Después selecciona el mes y registra cada día haciendo clic en las casillas:
+    <strong>P</strong> Presente · <strong>R</strong> Retardo · <strong>A</strong> Falta · <strong>J</strong> Justificada.
+    Los datos quedan guardados en este dispositivo.
+  </div>
+
+  <div class="attendance-toolbar card">
+    <div class="attendance-field">
+      <label>Grado</label>
+      <select id="attGrade">
+        <option>1.º Primaria</option><option>2.º Primaria</option><option>3.º Primaria</option>
+        <option>4.º Primaria</option><option>5.º Primaria</option><option selected>6.º Primaria</option>
+      </select>
+    </div>
+    <div class="attendance-field">
+      <label>Grupo</label>
+      <input id="attGroup" value="A" maxlength="3" placeholder="A">
+    </div>
+    <div class="attendance-field">
+      <label>Mes</label>
+      <input id="attMonth" type="month">
+    </div>
+    <div class="attendance-actions">
+      <button type="button" class="secondary-btn" onclick="attCurrentMonth()">📅 Mes actual</button>
+      <button type="button" class="primary-btn" onclick="attSaveMonth()">💾 Guardar</button>
+    </div>
+  </div>
+
+  <div class="card attendance-card">
+    <div class="attendance-head">
+      <div>
+        <span class="ai-kicker">1. LISTA DE ALUMNOS</span>
+        <h2>Alumnos de mi grupo</h2>
+        <p>Escribe los nombres en los recuadros. Puedes modificar la lista en cualquier momento.</p>
+      </div>
+    </div>
+    <div id="attendanceStudents" class="attendance-students"></div>
+    <div id="attendanceStudentEmpty" class="attendance-empty" style="display:none">
+      <div>👥</div><h3>Aún no hay alumnos</h3><p>Agrega un alumno para comenzar.</p>
+    </div>
+    <div class="student-actions">
+      <button type="button" class="primary-btn" onclick="attAddStudent()">＋ Agregar alumno</button>
+      <button type="button" class="secondary-btn" onclick="attAddFive()">＋ Agregar 5 recuadros</button>
+    </div>
+  </div>
+
+  <div class="card attendance-card">
+    <div class="attendance-head">
+      <div>
+        <span class="ai-kicker">2. REGISTRO MENSUAL</span>
+        <div class="attendance-month-title">
+          <h2 id="attTitle">Asistencia mensual</h2>
+          <span id="attMonthBadge" class="attendance-month-badge"></span>
+        </div>
+        <p>Haz clic en una casilla para cambiar el estado del alumno ese día.</p>
+      </div>
+      <div class="attendance-actions">
+        <button type="button" class="secondary-btn" onclick="attMarkAll('P')">✓ Todos presentes</button>
+        <button type="button" class="secondary-btn" onclick="attClearMonth()">↺ Limpiar mes</button>
+      </div>
+    </div>
+
+    <div class="attendance-stats">
+      <div class="attendance-stat"><span>👥</span><div><strong id="attTotal">0</strong><small>Alumnos</small></div></div>
+      <div class="attendance-stat"><span>✅</span><div><strong id="attPresent">0</strong><small>Presentes</small></div></div>
+      <div class="attendance-stat"><span>⏰</span><div><strong id="attLate">0</strong><small>Retardos</small></div></div>
+      <div class="attendance-stat"><span>❌</span><div><strong id="attAbsent">0</strong><small>Faltas</small></div></div>
+      <div class="attendance-stat"><span>📈</span><div><strong id="attPercent">0%</strong><small>Asistencia</small></div></div>
+    </div>
+
+    <div id="attendanceMonthEmpty" class="attendance-empty" style="display:none">
+      <div>👥</div><h3>Agrega los nombres de tus alumnos</h3>
+      <p>La tabla mensual aparecerá aquí.</p>
+    </div>
+    <div id="attendanceMonthTable" class="attendance-month-wrap"></div>
+
+    <div class="attendance-legend">
+      <span><i class="attendance-dot p"></i> P = Presente</span>
+      <span><i class="attendance-dot r"></i> R = Retardo</span>
+      <span><i class="attendance-dot a"></i> A = Falta</span>
+      <span><i class="attendance-dot j"></i> J = Justificada</span>
+    </div>
+  </div>
+
+  <div class="card attendance-card">
+    <div class="attendance-head">
+      <div><span class="ai-kicker">RESUMEN</span><h2>Resumen mensual por alumno</h2><p>Consulta los resultados de cada alumno.</p></div>
+      <div class="attendance-actions">
+        <button type="button" class="secondary-btn attendance-chart-button" onclick="attShowChart()">📊 Ver gráfica</button>
+        <button type="button" class="secondary-btn" onclick="attExportCSV()">⬇ Exportar CSV</button>
+        <button type="button" class="secondary-btn" onclick="attPrint()">🖨 Imprimir</button>
+      </div>
+    </div>
+    <div id="attendanceSummary"></div>
+  </div>
+</section>
+
+<div id="attendanceChartOverlay" class="attendance-chart-overlay" onclick="if(event.target===this)attCloseChart()">
+  <div class="attendance-chart-modal" role="dialog" aria-modal="true" aria-labelledby="attendanceChartTitle">
+    <div class="attendance-chart-head">
+      <div><span class="ai-kicker">GRÁFICA DE ASISTENCIA</span><h2 id="attendanceChartTitle">Porcentaje de asistencia</h2><p id="attendanceChartSubtitle">Resultados del mes seleccionado.</p></div>
+      <button type="button" class="attendance-chart-close" onclick="attCloseChart()" aria-label="Cerrar">×</button>
+    </div>
+    <div id="attendanceChartContent"></div>
+  </div>
+</div>
+
 <section id="rubrics" class="planner-view" style="display:none">
-  <div class="page-head"><span>EVALUACIÓN FORMATIVA</span><h1>Rúbricas 📊</h1><p>Diseña, personaliza y guarda rúbricas alineadas con tu planeación.</p></div>
+  <div class="page-head"><span>EVALUACIÓN FORMATIVA</span><h1>Instrumentos de evaluación 📊</h1><p>Diseña, personaliza, guarda y utiliza instrumentos de evaluación vinculados con tu planeación.</p></div>
   <div class="rubrics-layout">
     <aside class="card rubrics-menu">
-      <h3>Herramientas de rúbricas</h3>
-      <button class="rubric-menu-btn active" data-rubric-tool="crear">📊 Crear rúbrica</button>
-      <button class="rubric-menu-btn" data-rubric-tool="planeacion">↗ Desde mi planeación</button>
-      <button class="rubric-menu-btn" data-rubric-tool="guardadas">⭐ Rúbricas guardadas</button>
+      <h3>Instrumentos de evaluación</h3>
+      <p>Elige el instrumento que necesitas para observar, documentar y retroalimentar los aprendizajes.</p>
+      <button class="rubric-menu-btn active" data-rubric-tool="crear">📊 Rúbrica</button>
+      <button class="rubric-menu-btn" data-rubric-tool="cotejo">☑️ Lista de cotejo</button>
+      <button class="rubric-menu-btn" data-rubric-tool="observacion">👀 Guía de observación</button>
+      <button class="rubric-menu-btn" data-rubric-tool="escala">📝 Escala de valoración</button>
+      <button class="rubric-menu-btn" data-rubric-tool="anecdotico">💬 Registro anecdótico</button>
+      <button class="rubric-menu-btn" data-rubric-tool="portafolio">📁 Portafolio de evidencias</button>
+      <button class="rubric-menu-btn" data-rubric-tool="autoevaluacion">🪞 Autoevaluación</button>
+      <button class="rubric-menu-btn" data-rubric-tool="coevaluacion">👥 Coevaluación</button>
+      <div class="rubric-menu-divider"></div>
+      <button class="rubric-menu-btn" data-rubric-tool="planeacion">↗️ Instrumento desde mi planeación</button>
+      <button class="rubric-menu-btn" data-rubric-tool="guardadas">⭐ Instrumentos guardados</button>
     </aside>
     <div class="rubrics-main">
       <div class="card rubric-panel" id="rubricCreator">
-        <div class="rubric-panel-head"><div><span class="rubric-kicker">CREADOR</span><h2>Crear rúbrica</h2><p>Selecciona los datos y define los criterios que quieres evaluar.</p></div><span class="rubric-badge">NEM</span></div>
+        <div class="rubric-panel-head"><div><span class="rubric-kicker">CREADOR DE INSTRUMENTOS</span><h2 id="instrumentTitle">Crear rúbrica</h2><p id="instrumentDescription">Define criterios de evaluación y descriptores de desempeño.</p></div><span class="rubric-badge">NEM</span></div>
+        <div id="planContextBanner" class="plan-context-banner" style="display:none"></div>
         <div class="rubric-grid">
+          <label class="instrument-type-field">Tipo de instrumento<select id="instrumentType"><option value="rubrica">📊 Rúbrica</option><option value="cotejo">☑️ Lista de cotejo</option><option value="observacion">👀 Guía de observación</option><option value="escala">📝 Escala de valoración</option><option value="anecdotico">💬 Registro anecdótico</option><option value="portafolio">📁 Portafolio de evidencias</option><option value="autoevaluacion">🪞 Autoevaluación</option><option value="coevaluacion">👥 Coevaluación</option></select></label>
           <label>Grado<select id="rubricGrade"><option value="">Selecciona grado</option><option>1.º Primaria</option><option>2.º Primaria</option><option>3.º Primaria</option><option>4.º Primaria</option><option>5.º Primaria</option><option>6.º Primaria</option></select></label>
           <label>Fase<select id="rubricPhase"><option value="">Selecciona fase</option><option>Fase 3</option><option>Fase 4</option><option>Fase 5</option></select></label>
           <label>Campo formativo<select id="rubricField"><option value="">Selecciona campo</option><option>Lenguajes</option><option>Saberes y Pensamiento Científico</option><option>Ética, Naturaleza y Sociedades</option><option>De lo Humano y lo Comunitario</option></select></label>
           <label>Tipo de evidencia<select id="rubricEvidence"><option>Producto final</option><option>Proyecto</option><option>Exposición</option><option>Portafolio</option><option>Desempeño</option><option>Actividad escrita</option></select></label>
           <label class="full">Contenido<input id="rubricContent" placeholder="Escribe el contenido que evaluarás"></label>
           <label class="full">PDA<textarea id="rubricPda" rows="3" placeholder="Escribe o pega el PDA que orientará la evaluación"></textarea></label>
-          <label>Escala<select id="rubricScale"><option value="4">4 niveles</option><option value="3">3 niveles</option></select></label>
+          <label id="scaleField">Escala<select id="rubricScale"><option value="4">4 niveles</option><option value="3">3 niveles</option></select></label>
           <label>Número de criterios<select id="rubricCriteriaCount"><option>3</option><option selected>4</option><option>5</option><option>6</option></select></label>
         </div>
-        <div class="criteria-builder"><div class="criteria-head"><div><h3>Criterios de evaluación</h3><p>Define qué observarás en el desempeño del alumnado.</p></div><button type="button" class="secondary-btn" id="addCriterionBtn">＋ Agregar criterio</button></div><div id="criteriaList"></div></div>
-        <div class="rubric-actions"><button type="button" class="primary-btn" id="generateRubricBtn">✨ Generar rúbrica</button><button type="button" class="secondary-btn" id="clearRubricBtn">Limpiar</button></div>
+        <div class="criteria-builder"><div class="criteria-head"><div><h3 id="criteriaTitle">Criterios de evaluación</h3><p id="criteriaDescription">Define qué observarás en el desempeño del alumnado.</p></div><button type="button" class="secondary-btn" id="addCriterionBtn">＋ Agregar criterio</button></div><div id="criteriaList"></div></div>
+        <div class="rubric-actions"><button type="button" class="primary-btn" id="generateRubricBtn">✨ Generar instrumento</button><button type="button" class="secondary-btn" id="clearRubricBtn">Limpiar</button></div>
       </div>
       <div class="card rubric-panel" id="rubricFromPlan" style="display:none">
-        <div class="rubric-panel-head"><div><span class="rubric-kicker">PLANEACIONES</span><h2>Usar datos de mi planeación</h2><p>Selecciona una planeación guardada para cargar sus datos.</p></div></div>
+        <div class="rubric-panel-head"><div><span class="rubric-kicker">PLANEACIONES</span><h2>Instrumento desde mi planeación</h2><p>Selecciona una planeación guardada. Sus datos se cargarán en el creador para que puedas elegir el instrumento.</p></div></div>
         <div id="rubricPlansList" class="rubric-plans-list"></div>
       </div>
       <div class="card rubric-panel" id="savedRubricsPanel" style="display:none">
-        <div class="rubric-panel-head"><div><span class="rubric-kicker">BIBLIOTECA</span><h2>Rúbricas guardadas</h2><p>Consulta y recupera las rúbricas que hayas creado.</p></div></div>
+        <div class="rubric-panel-head"><div><span class="rubric-kicker">BIBLIOTECA</span><h2>Instrumentos guardados</h2><p>Consulta, recupera o elimina los instrumentos que hayas creado.</p></div></div>
         <div id="savedRubricsList" class="saved-rubrics-list"></div>
       </div>
       <div class="card rubric-output" id="rubricOutput" style="display:none"></div>
@@ -922,45 +1129,445 @@ function copyIdea(i){const r=window.currentIdeaResults?.[i];if(!r)return;navigat
 function saveIdea(i){const r=window.currentIdeaResults?.[i];if(!r)return;const arr=JSON.parse(localStorage.getItem('creatividadDocenteIdeas')||'[]');arr.unshift({tool:IDEA_TOOLS[activeIdeaTool].title,title:r[0],text:r[1],context:ideaContext(),date:new Date().toISOString()});localStorage.setItem('creatividadDocenteIdeas',JSON.stringify(arr.slice(0,50)));toast('Idea guardada.')}
 function addIdeaToPlanning(i){const r=window.currentIdeaResults?.[i];if(!r)return;localStorage.setItem('creatividadIdeaParaPlaneacion',JSON.stringify({tool:activeIdeaTool,title:r[0],text:r[1],context:ideaContext()}));toast('Propuesta preparada para agregar a tu planeación.')}
 </script>
-<script src="js/app.js"></script>
+<script src="js/app.js?v=20260910-0515"></script>
 
 <script>
 (function(){
   const $=id=>document.getElementById(id);
-  const escR=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   let criteria=[];
-  function initCriteria(){const n=+$('rubricCriteriaCount').value||4;criteria=Array.from({length:n},(_,i)=>criteria[i]||'Criterio '+(i+1));renderCriteria();}
-  function renderCriteria(){$('criteriaList').innerHTML=criteria.map((x,i)=>`<div class="criterion-row"><input value="${escR(x)}" data-criterion="${i}" placeholder="Ej. Explica sus ideas con claridad"><button type="button" class="remove-criterion" data-remove="${i}">×</button></div>`).join('');}
-  function syncCriteria(){document.querySelectorAll('[data-criterion]').forEach(e=>criteria[+e.dataset.criterion]=e.value)}
+  let selectedPlanId=null;
+  const TYPE={
+    rubrica:{name:'Rúbrica',icon:'📊',desc:'Define criterios y descriptores para valorar distintos niveles de desempeño.'},
+    cotejo:{name:'Lista de cotejo',icon:'☑️',desc:'Registra si se observa o no cada indicador de aprendizaje.'},
+    observacion:{name:'Guía de observación',icon:'👀',desc:'Orienta la observación sistemática de procesos, interacciones y desempeños.'},
+    escala:{name:'Escala de valoración',icon:'📝',desc:'Valora cada indicador mediante una escala gradual de desempeño.'},
+    anecdotico:{name:'Registro anecdótico',icon:'💬',desc:'Documenta situaciones significativas, evidencias observadas e intervención docente.'},
+    portafolio:{name:'Portafolio de evidencias',icon:'📁',desc:'Organiza evidencias para observar avances, reflexión y mejora del aprendizaje.'},
+    autoevaluacion:{name:'Autoevaluación',icon:'🪞',desc:'Favorece que el alumnado valore sus aprendizajes, avances y necesidades de apoyo.'},
+    coevaluacion:{name:'Coevaluación',icon:'👥',desc:'Permite valorar el trabajo de pares mediante criterios claros y respetuosos.'}
+  };
   function plans(){try{return JSON.parse(localStorage.getItem('creatividad_docente_planes')||'[]')}catch(e){return []}}
-  function savedRubrics(){try{return JSON.parse(localStorage.getItem('creatividad_docente_rubricas')||'[]')}catch(e){return []}}
-  function renderPlans(){const list=$('rubricPlansList'), ps=plans(); if(!ps.length){list.innerHTML='<div class="rubric-plan-option"><span class="rubric-plan-icon">📚</span><div><strong>No tienes planeaciones guardadas</strong><small>Guarda una planeación en Mis planeaciones para usarla aquí.</small></div></div>';return} list.innerHTML=ps.map(p=>{const n=p.project?.name||'Proyecto sin nombre',g=p.academic?.grade||'Grado no indicado',f=p.academic?.field||'Campo no indicado';return `<button class="rubric-plan-option" type="button" data-plan-id="${escR(p.id)}"><span class="rubric-plan-icon">📘</span><span><strong>${escR(n)}</strong><small>${escR(g)} · ${escR(f)} · ${escR(p.school?.name||'Escuela no indicada')}</small></span><span>›</span></button>`}).join('')}
-  function buildCriteriaFromPlan(content,pdas){
-    const raw=Array.isArray(pdas)?pdas.join('\n'):String(pdas||'');
-    let parts=raw.split(/\n+|(?<=[.;])\s+/).map(x=>x.replace(/^[-•–—]\s*/, '').trim()).filter(x=>x.length>12);
-    const result=[];
-    parts.forEach(x=>{ if(!result.some(y=>y.toLowerCase()===x.toLowerCase())) result.push(x.replace(/[.;]+$/,'')); });
-    if(content && result.length<3) result.push('Relaciona sus aprendizajes con el contenido: '+content);
-    const extras=[
-      'Explica con claridad lo que aprendió y sustenta sus ideas con evidencias.',
-      'Aplica lo aprendido en la actividad o producto planteado.',
-      'Revisa y mejora su trabajo a partir de la retroalimentación.'
-    ];
-    extras.forEach(x=>{if(result.length<6)result.push(x)});
-    return result.slice(0,6);
-  }
-  function loadPlan(id){const p=plans().find(x=>String(x.id)===String(id));if(!p)return;const a=p.academic||{},c=p.content||{}; $('rubricGrade').value=a.grade||'';$('rubricPhase').value=a.phase||'';$('rubricField').value=a.field||'';$('rubricContent').value=c.content||'';$('rubricPda').value=Array.isArray(c.pdas)?c.pdas.join('\n'):(c.pdas||'');criteria=buildCriteriaFromPlan(c.content,c.pdas);$('rubricCriteriaCount').value=Math.min(6,Math.max(3,criteria.length));renderCriteria();showRubricPanel('crear');toast('✓ Datos y criterios de evaluación cargados desde la planeación');}
-  function showRubricPanel(tool){document.querySelectorAll('.rubric-panel').forEach(x=>x.style.display='none');$('rubricOutput').style.display='none';document.querySelectorAll('.rubric-menu-btn').forEach(b=>b.classList.toggle('active',b.dataset.rubricTool===tool));if(tool==='crear')$('rubricCreator').style.display='block';if(tool==='planeacion'){ $('rubricFromPlan').style.display='block';renderPlans();}if(tool==='guardadas'){ $('savedRubricsPanel').style.display='block';renderSaved();}}
-  function generate(){syncCriteria();const g=$('rubricGrade').value||'grado seleccionado',f=$('rubricField').value||'campo formativo',content=$('rubricContent').value||'aprendizaje a evaluar',pda=$('rubricPda').value||'PDA seleccionado',ev=$('rubricEvidence').value,levels=+$('rubricScale').value||4;const levelNames=levels===3?['Logro destacado','En proceso','Requiere apoyo']:['Sobresaliente','Satisfactorio','En proceso','Requiere apoyo'];const rows=criteria.map((c,i)=>[c,levelNames.map((l,j)=>`${l}: ${j===0?'Evidencia un desempeño completo, autónomo y pertinente.':j===1?'Cumple con lo esperado y requiere pocos apoyos.':j===2?'Presenta avances, pero necesita acompañamiento para consolidar el aprendizaje.':'Requiere apoyo constante para alcanzar el desempeño esperado.'}`)]);const title='Rúbrica de evaluación · '+content;let html=`<div class="rubric-output-head"><div><span class="rubric-kicker">${escR(g)} · ${escR(f)}</span><h2>${escR(title)}</h2><p><b>Evidencia:</b> ${escR(ev)} · <b>PDA:</b> ${escR(pda)}</p></div><div class="rubric-output-actions"><button class="secondary-btn" onclick="copyRubric()">📋 Copiar</button><button class="secondary-btn" onclick="saveCurrentRubric()">⭐ Guardar</button><button class="primary-btn" onclick="printRubric()">🖨 Imprimir</button></div></div><div class="rubric-table-wrap"><table class="rubric-table"><thead><tr><th>Criterio</th>${levelNames.map(x=>`<th>${escR(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr><td><b>${escR(r[0])}</b></td>${r[1].map(x=>`<td contenteditable="true">${escR(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;$('rubricOutput').innerHTML=html;$('rubricOutput').style.display='block';window.currentRubric={title,grade:g,field:f,content,pda,evidence:ev,levels:levelNames,criteria:rows};$('rubricOutput').scrollIntoView({behavior:'smooth',block:'start'});}
-  function renderSaved(){const list=$('savedRubricsList'),arr=savedRubrics();if(!arr.length){list.innerHTML='<div class="rubric-plan-option"><span class="rubric-plan-icon">⭐</span><div><strong>Aún no tienes rúbricas guardadas</strong><small>Genera una rúbrica y pulsa Guardar.</small></div></div>';return}list.innerHTML=arr.map((r,i)=>`<article class="saved-rubric-card"><h3>${escR(r.title)}</h3><p>${escR(r.grade)} · ${escR(r.field)} · ${escR(r.evidence)}</p><small>${new Date(r.date).toLocaleDateString('es-MX')}</small><div class="saved-rubric-actions"><button class="secondary-btn" onclick="loadSavedRubric(${i})">Abrir</button><button class="secondary-btn" onclick="deleteSavedRubric(${i})">Eliminar</button></div></article>`).join('')}
-  window.saveCurrentRubric=function(){if(!window.currentRubric)return toast('Primero genera una rúbrica.');const arr=savedRubrics();arr.unshift({...window.currentRubric,date:new Date().toISOString()});localStorage.setItem('creatividad_docente_rubricas',JSON.stringify(arr.slice(0,50)));toast('✓ Rúbrica guardada');}
-  window.loadSavedRubric=function(i){const r=savedRubrics()[i];if(!r)return;window.currentRubric=r;$('rubricGrade').value=r.grade;$('rubricField').value=r.field;$('rubricContent').value=r.content;$('rubricPda').value=r.pda;showRubricPanel('crear');generate();}
-  window.deleteSavedRubric=function(i){const arr=savedRubrics();arr.splice(i,1);localStorage.setItem('creatividad_docente_rubricas',JSON.stringify(arr));renderSaved();toast('Rúbrica eliminada');}
-  window.copyRubric=function(){if(!window.currentRubric)return;const r=window.currentRubric;const txt=r.title+'\n\n'+r.criteria.map(x=>x[0]+'\n'+x[1].join('\n')).join('\n\n');navigator.clipboard?.writeText(txt);toast('Rúbrica copiada');}
+  function saved(){try{return JSON.parse(localStorage.getItem('creatividad_docente_instrumentos')||'[]')}catch(e){return []}}
+  function currentType(){return $('instrumentType')?.value||'rubrica'}
+  function syncCriteria(){document.querySelectorAll('[data-criterion]').forEach(e=>criteria[+e.dataset.criterion]=e.value.trim())}
+  function initCriteria(){const n=Math.max(3,Math.min(6,+$('rubricCriteriaCount').value||4));criteria=Array.from({length:n},(_,i)=>criteria[i]||'Indicador '+(i+1));renderCriteria()}
+  function renderCriteria(){const list=$('criteriaList');if(!list)return;list.innerHTML=criteria.map((x,i)=>`<div class="criterion-row"><input value="${esc(x)}" data-criterion="${i}" placeholder="Ej. Explica sus ideas con claridad"><button type="button" class="remove-criterion" data-remove="${i}">×</button></div>`).join('')}
+  function updateTypeUI(){const t=currentType(),cfg=TYPE[t]||TYPE.rubrica;$('instrumentTitle').textContent='Crear '+cfg.name.toLowerCase();$('instrumentDescription').textContent=cfg.desc;$('criteriaTitle').textContent=['rubrica','cotejo','observacion','escala'].includes(t)?'Indicadores o criterios de evaluación':'Aspectos a documentar o valorar';$('criteriaDescription').textContent=t==='rubrica'?'Define qué observarás y cómo se manifestará el desempeño en cada nivel.':cfg.desc;$('scaleField').style.display=['rubrica','escala'].includes(t)?'flex':'none';$('generateRubricBtn').textContent='✨ Generar '+cfg.name.toLowerCase();if(t==='cotejo')$('rubricEvidence').value='Desempeño';}
+  function buildCriteriaFromPlan(content,pdas){const raw=Array.isArray(pdas)?pdas.join('\n'):String(pdas||'');let parts=raw.split(/\n+|(?<=[.;])\s+/).map(x=>x.replace(/^[-•–—]\s*/,'').trim()).filter(x=>x.length>12);const result=[];parts.forEach(x=>{if(!result.some(y=>y.toLowerCase()===x.toLowerCase()))result.push(x.replace(/[.;]+$/,'') )});if(content&&result.length<3)result.push('Relaciona sus aprendizajes con el contenido: '+content);['Explica con claridad lo que aprendió y sustenta sus ideas con evidencias.','Aplica lo aprendido en la actividad o producto planteado.','Revisa y mejora su trabajo a partir de la retroalimentación.'].forEach(x=>{if(result.length<6)result.push(x)});return result.slice(0,6)}
+  function loadPlan(id){const p=plans().find(x=>String(x.id)===String(id));if(!p)return;selectedPlanId=p.id;const a=p.academic||{},c=p.content||{};$('rubricGrade').value=a.grade||'';$('rubricPhase').value=a.phase||'';$('rubricField').value=a.field||'';$('rubricContent').value=c.content||'';$('rubricPda').value=Array.isArray(c.pdas)?c.pdas.join('\n'):(c.pdas||'');criteria=buildCriteriaFromPlan(c.content,c.pdas);$('rubricCriteriaCount').value=Math.min(6,Math.max(3,criteria.length));renderCriteria();const b=$('planContextBanner');b.style.display='block';b.innerHTML='📘 <b>Planeación cargada:</b> '+esc(p.project?.name||'Proyecto sin nombre')+' · '+esc(a.grade||'')+' · '+esc(a.field||'');showRubricPanel('crear');toast('✓ Datos de la planeación cargados. Ahora elige o cambia el instrumento.');}
+  function renderPlans(){const list=$('rubricPlansList'),ps=plans();if(!ps.length){list.innerHTML='<div class="instrument-empty"><div>📚</div><h3>No tienes planeaciones guardadas</h3><p>Guarda una planeación en Mis planeaciones para usar sus datos aquí.</p></div>';return}list.innerHTML=ps.map(p=>{const n=p.project?.name||'Proyecto sin nombre',g=p.academic?.grade||'Grado no indicado',f=p.academic?.field||'Campo no indicado';return `<button class="rubric-plan-option" type="button" data-plan-id="${esc(p.id)}"><span class="rubric-plan-icon">📘</span><span><strong>${esc(n)}</strong><small>${esc(g)} · ${esc(f)} · ${esc(p.school?.name||'Escuela no indicada')}</small></span><span>›</span></button>`}).join('')}
+  function showRubricPanel(tool){document.querySelectorAll('.rubric-panel').forEach(x=>x.style.display='none');$('rubricOutput').style.display='none';document.querySelectorAll('.rubric-menu-btn').forEach(b=>b.classList.toggle('active',b.dataset.rubricTool===tool));if(TYPE[tool]){$('rubricCreator').style.display='block';$('instrumentType').value=tool;updateTypeUI();}if(tool==='crear'){$('rubricCreator').style.display='block';$('instrumentType').value='rubrica';updateTypeUI();}if(tool==='planeacion'){$('rubricFromPlan').style.display='block';renderPlans();}if(tool==='guardadas'){$('savedRubricsPanel').style.display='block';renderSaved();}}
+  function meta(){return {type:currentType(),typeName:TYPE[currentType()].name,grade:$('rubricGrade').value||'No indicado',phase:$('rubricPhase').value||'No indicada',field:$('rubricField').value||'No indicado',evidence:$('rubricEvidence').value||'No indicada',content:$('rubricContent').value.trim()||'Aprendizaje a evaluar',pda:$('rubricPda').value.trim()||'No indicado'}}
+  function descriptor(t,j){if(t==='rubrica'){const l=+$('rubricScale').value||4;const a=l===3?['Logro destacado','En proceso','Requiere apoyo']:['Sobresaliente','Satisfactorio','En proceso','Requiere apoyo'];return [a[j],j===0?'Evidencia un desempeño completo, autónomo y pertinente.':j===1?'Cumple con lo esperado y requiere pocos apoyos.':j===2?'Presenta avances y necesita acompañamiento para consolidar el aprendizaje.':'Requiere apoyo constante para alcanzar el desempeño esperado.']}return null}
+  function generate(){syncCriteria();const m=meta(),t=m.type;let headers=[],rows=[];if(t==='rubrica'){headers=(+$('rubricScale').value===3?['Logro destacado','En proceso','Requiere apoyo']:['Sobresaliente','Satisfactorio','En proceso','Requiere apoyo']);rows=criteria.map(c=>[c,...headers.map((h,j)=>descriptor(t,j)[1])]);}else if(t==='cotejo'){headers=['Sí','No','Observaciones'];rows=criteria.map(c=>[c,'☐','☐','']);}else if(t==='observacion'){headers=['Siempre','Frecuentemente','A veces','No observado'];rows=criteria.map(c=>[c,'☐','☐','☐','☐']);}else if(t==='escala'){headers=['4 · Logro destacado','3 · Satisfactorio','2 · En proceso','1 · Requiere apoyo'];rows=criteria.map(c=>[c,'☐','☐','☐','☐']);}else if(t==='autoevaluacion'||t==='coevaluacion'){headers=['Sí','A veces','Todavía no','Mi reflexión'];rows=criteria.map(c=>[c,'☐','☐','☐','']);}else if(t==='portafolio'){headers=['Evidencia','Fecha','Qué demuestra','Reflexión / mejora'];rows=criteria.map(c=>[c,'','','']);}else if(t==='anecdotico'){headers=['Fecha','Situación observada','Evidencia / interpretación','Intervención y seguimiento'];rows=criteria.slice(0,4).map(()=>['','','','']);}
+    const title=m.typeName+' · '+m.content;const table=`<div class="instrument-table-wrap"><table class="instrument-table"><thead><tr><th>${t==='anecdotico'?'Registro':t==='portafolio'?'Aspecto a documentar':'Indicador / criterio'}</th>${headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((x,i)=>`<td ${i>0?'contenteditable="true"':''}>${esc(x)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    const note=t==='cotejo'?'Marca Sí cuando la evidencia esté presente y No cuando requiera seguimiento.':t==='observacion'?'Registra la frecuencia o presencia del desempeño observado durante la actividad.':t==='anecdotico'?'Documenta hechos significativos de manera descriptiva y relaciona la observación con decisiones de acompañamiento.':t==='autoevaluacion'?'Invita al alumnado a responder con honestidad y usar la reflexión para identificar avances y necesidades de apoyo.':t==='coevaluacion'?'La valoración entre pares debe realizarse con criterios claros, respeto y retroalimentación para mejorar.':'Utiliza el instrumento durante el proceso de aprendizaje y registra evidencias que orienten la retroalimentación.';
+    $('rubricOutput').innerHTML=`<div class="rubric-output-head"><div><span class="rubric-kicker">${esc(m.typeName.toUpperCase())} · ${esc(m.grade)} · ${esc(m.field)}</span><h2>${esc(title)}</h2><p>${esc(m.pda)}</p></div><div class="rubric-output-actions"><button class="secondary-btn" onclick="copyRubric()">📋 Copiar</button><button class="secondary-btn" onclick="saveCurrentRubric()">⭐ Guardar</button><button class="primary-btn" onclick="printRubric()">🖨 Imprimir</button></div></div><div class="instrument-meta"><div><span>Grado</span><b>${esc(m.grade)}</b></div><div><span>Fase</span><b>${esc(m.phase)}</b></div><div><span>Evidencia</span><b>${esc(m.evidence)}</b></div><div><span>Contenido</span><b>${esc(m.content)}</b></div></div><div class="instrument-preview">${table}<div class="instrument-note">💡 ${esc(note)}</div></div>`;$('rubricOutput').style.display='block';window.currentRubric={...m,title,criteria:[...criteria],headers,rows};$('rubricOutput').scrollIntoView({behavior:'smooth',block:'start'});}
+  function renderSaved(){const list=$('savedRubricsList'),arr=saved();if(!arr.length){list.innerHTML='<div class="instrument-empty"><div>⭐</div><h3>Aún no tienes instrumentos guardados</h3><p>Genera un instrumento y pulsa Guardar.</p></div>';return}list.innerHTML=arr.map((r,i)=>`<article class="saved-rubric-card"><h3>${esc(r.typeName||r.type||'Instrumento')}</h3><p>${esc(r.content)} · ${esc(r.grade)} · ${esc(r.field)}</p><small>${new Date(r.date).toLocaleDateString('es-MX')}</small><div class="saved-rubric-actions"><button class="secondary-btn" onclick="loadSavedRubric(${i})">Abrir</button><button class="secondary-btn" onclick="deleteSavedRubric(${i})">Eliminar</button></div></article>`).join('')}
+  window.saveCurrentRubric=function(){if(!window.currentRubric)return toast('Primero genera un instrumento.');const arr=saved();arr.unshift({...window.currentRubric,date:new Date().toISOString(),planId:selectedPlanId});localStorage.setItem('creatividad_docente_instrumentos',JSON.stringify(arr.slice(0,100)));toast('✓ Instrumento guardado correctamente.');}
+  window.loadSavedRubric=function(i){const r=saved()[i];if(!r)return;window.currentRubric=r;$('instrumentType').value=r.type||'rubrica';$('rubricGrade').value=r.grade||'';$('rubricPhase').value=r.phase||'';$('rubricField').value=r.field||'';$('rubricEvidence').value=r.evidence||'Producto final';$('rubricContent').value=r.content||'';$('rubricPda').value=r.pda||'';criteria=Array.isArray(r.criteria)?r.criteria.slice(0,6):[];$('rubricCriteriaCount').value=Math.max(3,Math.min(6,criteria.length||4));renderCriteria();showRubricPanel('crear');generate();}
+  window.deleteSavedRubric=function(i){const arr=saved();arr.splice(i,1);localStorage.setItem('creatividad_docente_instrumentos',JSON.stringify(arr));renderSaved();toast('Instrumento eliminado.');}
+  window.copyRubric=function(){const r=window.currentRubric;if(!r)return;const text=r.title+'\n\n'+r.criteria.map((c,i)=>`${i+1}. ${c}`).join('\n')+'\n\n'+(r.headers||[]).join(' | ');navigator.clipboard?.writeText(text).then(()=>toast('Instrumento copiado.')).catch(()=>toast('Selecciona y copia el contenido manualmente.'));}
   window.printRubric=function(){window.print()}
-  document.addEventListener('click',e=>{const b=e.target.closest('.rubric-menu-btn');if(b)showRubricPanel(b.dataset.rubricTool);const p=e.target.closest('[data-plan-id]');if(p)loadPlan(p.dataset.planId);const rm=e.target.closest('[data-remove]');if(rm){syncCriteria();criteria.splice(+rm.dataset.remove,1);renderCriteria();}});
-  $('rubricCriteriaCount').addEventListener('change',initCriteria);$('addCriterionBtn').addEventListener('click',()=>{syncCriteria();criteria.push('Criterio '+(criteria.length+1));renderCriteria();$('rubricCriteriaCount').value=Math.min(6,Math.max(3,criteria.length))});$('generateRubricBtn').addEventListener('click',generate);$('clearRubricBtn').addEventListener('click',()=>{document.querySelectorAll('#rubricCreator input,#rubricCreator textarea').forEach(e=>e.value='');$('rubricGrade').value='';$('rubricPhase').value='';$('rubricField').value='';criteria=[];initCriteria();$('rubricOutput').style.display='none'});initCriteria();
+  document.addEventListener('click',e=>{const b=e.target.closest('.rubric-menu-btn');if(b)showRubricPanel(b.dataset.rubricTool);const p=e.target.closest('[data-plan-id]');if(p)loadPlan(p.dataset.planId);const rm=e.target.closest('[data-remove]');if(rm){syncCriteria();criteria.splice(+rm.dataset.remove,1);if(criteria.length<3)criteria.push('Indicador '+(criteria.length+1));renderCriteria();$('rubricCriteriaCount').value=Math.min(6,Math.max(3,criteria.length));}});
+  $('instrumentType')?.addEventListener('change',()=>{showRubricPanel($('instrumentType').value)});$('rubricCriteriaCount')?.addEventListener('change',initCriteria);$('addCriterionBtn')?.addEventListener('click',()=>{syncCriteria();if(criteria.length>=6)return toast('Máximo 6 criterios.');criteria.push('Indicador '+(criteria.length+1));renderCriteria();$('rubricCriteriaCount').value=criteria.length});$('generateRubricBtn')?.addEventListener('click',generate);$('clearRubricBtn')?.addEventListener('click',()=>{document.querySelectorAll('#rubricCreator input,#rubricCreator textarea').forEach(e=>e.value='');$('rubricGrade').value='';$('rubricPhase').value='';$('rubricField').value='';$('instrumentType').value='rubrica';$('planContextBanner').style.display='none';criteria=[];initCriteria();$('rubricOutput').style.display='none';updateTypeUI();selectedPlanId=null});
+  initCriteria();updateTypeUI();
   const oldShow=window.showView;window.showView=function(id){const r=$('rubrics');if(r&&id!=='rubrics')r.style.display='none';oldShow(id);if(id==='rubrics'){document.querySelectorAll('.planner-view').forEach(v=>{if(v.id!=='rubrics')v.style.display='none'});$('rubrics').style.display='block';showRubricPanel('crear');}}
+})();
+</script>
+
+
+<script>
+/* =========================================================
+   REGISTRO DE ASISTENCIA
+   Funciona sin servidor y guarda datos en localStorage.
+   ========================================================= */
+(function(){
+  /* ---------- ASISTENCIA ---------- */
+  const ATT_KEY='creatividad_docente_asistencia';
+  const ATT_STUDENTS='creatividad_docente_alumnos';
+
+  function attStudents(){
+    try{return JSON.parse(localStorage.getItem(ATT_STUDENTS)||'[]')}catch(e){return []}
+  }
+  function setStudents(a){localStorage.setItem(ATT_STUDENTS,JSON.stringify(a))}
+  function attData(){
+    try{return JSON.parse(localStorage.getItem(ATT_KEY)||'{}')}catch(e){return {}}
+  }
+  function setAttData(a){localStorage.setItem(ATT_KEY,JSON.stringify(a))}
+
+  function attDateKey(){return $('attDate')?.value||new Date().toISOString().slice(0,10)}
+  function attGroupKey(){return (($('attGrade')?.value||'6.º Primaria')+'|'+($('attGroup')?.value||'A')).replace(/\s+/g,'_')}
+
+  function renderAttendance(){
+    const students=attStudents(), data=attData(), key=attDateKey()+'__'+attGroupKey();
+    const saved=data[key]||{};
+    $('attTitle').textContent=($('attGrade')?.value||'6.º Primaria')+' · Grupo '+($('attGroup')?.value||'A');
+    const body=$('attendanceBody');
+    if(!students.length){
+      body.innerHTML='';$('attendanceEmpty').style.display='block';
+    }else{
+      $('attendanceEmpty').style.display='none';
+      body.innerHTML=students.map((s,i)=>{
+        const rec=saved[s.id]||{status:'P',note:''};
+        return `<tr>
+          <td>${i+1}</td>
+          <td class="attendance-name"><input value="${esc(s.name)}" onchange="attRename('${s.id}',this.value)"></td>
+          ${[['P','Presente'],['R','Retardo'],['A','Falta'],['J','Justificada']].map(([v,l])=>`<td class="attendance-radio"><input type="radio" name="att_${s.id}" value="${v}" ${rec.status===v?'checked':''} onchange="attStatus('${s.id}',this.value)"><span class="sr-only">${l}</span></td>`).join('')}
+          <td class="attendance-note"><input value="${esc(rec.note||'')}" placeholder="Nota..." onchange="attNote('${s.id}',this.value)"></td>
+          <td><button type="button" class="attendance-remove" onclick="attRemoveStudent('${s.id}')">×</button></td>
+        </tr>`;
+      }).join('');
+    }
+    updateAttStats();
+  }
+
+  function currentRecords(){
+    const students=attStudents(), data=attData(), key=attDateKey()+'__'+attGroupKey();
+    if(!data[key])data[key]={};
+    students.forEach(s=>{
+      if(!data[key][s.id])data[key][s.id]={status:'P',note:''};
+    });
+    return {students,data,key};
+  }
+
+  window.attStatus=function(id,status){const x=currentRecords();x.data[x.key][id].status=status;setAttData(x.data);updateAttStats()}
+  window.attNote=function(id,note){const x=currentRecords();x.data[x.key][id].note=note;setAttData(x.data)}
+  window.attRename=function(id,name){const a=attStudents();const s=a.find(x=>x.id===id);if(s&&name.trim()){s.name=name.trim();setStudents(a);renderAttendance();}}
+  window.attAddStudent=function(){
+    const a=attStudents(), name='Alumno '+(a.length+1);
+    a.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),name});
+    setStudents(a);renderAttendance();
+    setTimeout(()=>{const inputs=document.querySelectorAll('.attendance-name input');inputs[inputs.length-1]?.focus();inputs[inputs.length-1]?.select()},30);
+  };
+  window.attRemoveStudent=function(id){
+    if(!confirm('¿Eliminar este alumno de la lista del grupo?'))return;
+    setStudents(attStudents().filter(s=>s.id!==id));renderAttendance();toast('Alumno eliminado.');
+  };
+  window.attMarkAll=function(status){
+    const x=currentRecords();x.students.forEach(s=>x.data[x.key][s.id].status=status);setAttData(x.data);renderAttendance();
+  };
+  window.attSave=function(){const x=currentRecords();setAttData(x.data);renderAttendance();renderAttHistory();toast('✓ Asistencia guardada para '+attDateKey()+'.')}
+  window.attLoadToday=function(){$('attDate').value=new Date().toISOString().slice(0,10);renderAttendance();}
+
+  function updateAttStats(){
+    const a=attStudents(), x=currentRecords(), vals=a.map(s=>x.data[x.key][s.id]?.status||'P');
+    const present=vals.filter(v=>v==='P').length, late=vals.filter(v=>v==='R').length, absent=vals.filter(v=>v==='A').length, just=vals.filter(v=>v==='J').length;
+    $('attTotal').textContent=a.length;$('attPresent').textContent=present;$('attLate').textContent=late;$('attAbsent').textContent=absent;
+    $('attPercent').textContent=a.length?Math.round(((present+late+just)/a.length)*100)+'%':'0%';
+  }
+
+  function renderAttHistory(){
+    const box=$('attendanceHistoryList'), data=attData(), keys=Object.keys(data).sort().reverse();
+    if(!keys.length){box.innerHTML='<div class="attendance-empty"><div>📅</div><h3>Aún no hay registros</h3><p>Guarda una asistencia para verla aquí.</p></div>';return;}
+    box.innerHTML=keys.slice(0,30).map(key=>{
+      const [date,group]=key.split('__'), vals=Object.values(data[key]||{}).map(x=>x.status);
+      const p=vals.filter(x=>x==='P').length,r=vals.filter(x=>x==='R').length,a=vals.filter(x=>x==='A').length,j=vals.filter(x=>x==='J').length;
+      return `<div class="att-history-row"><div><strong>${esc(date)}</strong><small>${esc((group||'').replace(/_/g,' '))}</small></div><div class="att-history-badges"><span class="att-badge present">✓ ${p}</span><span class="att-badge late">⏰ ${r}</span><span class="att-badge absent">✕ ${a}</span><span class="att-badge">J ${j}</span></div></div>`;
+    }).join('');
+  }
+
+  window.attExportCSV=function(){
+    const students=attStudents(), data=attData(), keys=Object.keys(data).sort();
+    if(!students.length||!keys.length){toast('No hay datos de asistencia para exportar.');return;}
+    let csv='Fecha,Grado,Grupo,Alumno,Estado,Observación\n';
+    keys.forEach(key=>{
+      const [date,groupRaw]=key.split('__'), [grade,group]=groupRaw.replace(/_/g,' ').split('|');
+      students.forEach(s=>{const r=data[key]?.[s.id]||{};csv+=`"${date}","${(grade||'').replaceAll('"','""')}","${(group||'').replaceAll('"','""')}","${s.name.replaceAll('"','""')}","${r.status||'P'}","${(r.note||'').replaceAll('"','""')}"\n`;});
+    });
+    const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+    a.href=url;a.download='asistencia_creatividad_docente.csv';a.click();URL.revokeObjectURL(url);
+  };
+  window.attPrint=function(){window.print()};
+
+  function initAttendance(){
+    if(!$('attDate'))return;
+    $('attDate').value=new Date().toISOString().slice(0,10);
+    ['attDate','attGrade','attGroup'].forEach(id=>$(id)?.addEventListener('change',renderAttendance));
+    renderAttendance();renderAttHistory();
+  }
+  initAttendance();
+
+  /* Extiende showView para abrir correctamente las nuevas herramientas. */
+  const previousShowView=window.showView;
+  window.showView=function(id){
+    if(id==='ai'||id==='attendance'){
+      document.querySelectorAll('.planner-view').forEach(v=>v.style.display='none');
+      const target=$(id);if(target)target.style.display='block';
+      document.querySelectorAll('.nav a[data-action]').forEach(a=>a.classList.toggle('active',a.dataset.action===id));
+      if(id==='attendance'){renderAttendance();renderAttHistory();}
+      window.scrollTo({top:0,behavior:'smooth'});
+      return;
+    }
+    if(typeof previousShowView==='function')return previousShowView(id);
+  };
+})();
+</script>
+
+
+<script id="attendance-month-js">
+(function(){
+  const KEY='creatividad_docente_asistencia';
+  const STUDENTS_KEY='creatividad_docente_alumnos';
+  const $=id=>document.getElementById(id);
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch(e){return f}};
+  const data=()=>read(KEY,{});
+  const saveData=v=>localStorage.setItem(KEY,JSON.stringify(v));
+  function groupKey(){return (($('attGrade')?.value||'6.º Primaria')+'|'+($('attGroup')?.value||'A')).replace(/\s+/g,'_')}
+  function studentsRaw(){return read(STUDENTS_KEY,{})}
+  function students(){
+    const x=studentsRaw();
+    return Array.isArray(x)?x:(Array.isArray(x[groupKey()])?x[groupKey()]:[]);
+  }
+  function saveStudents(list){
+    const x=studentsRaw(), obj=Array.isArray(x)?{}:x;
+    obj[groupKey()]=list;localStorage.setItem(STUDENTS_KEY,JSON.stringify(obj));
+  }
+  function month(){return $('attMonth')?.value||new Date().toISOString().slice(0,7)}
+  function days(){const [y,m]=month().split('-').map(Number);const total=new Date(y,m,0).getDate();const out=[];for(let d=1;d<=total;d++){const w=new Date(y,m-1,d).getDay();if(w!==0&&w!==6)out.push(d)}return out}
+  function monthName(){const [y,m]=month().split('-').map(Number);return new Intl.DateTimeFormat('es-MX',{month:'long',year:'numeric'}).format(new Date(y,m-1,1))}
+  function weekday(d){const [y,m]=month().split('-').map(Number);return ['dom','lun','mar','mié','jue','vie','sáb'][new Date(y,m-1,d).getDay()]}
+  function key(d){return month()+'|'+groupKey()+'|'+String(d).padStart(2,'0')}
+  function status(id,d){return data()[key(d)]?.[id]||''}
+  function setStatus(id,d,s){
+    const x=data(),k=key(d);
+    if(!x[k])x[k]={};
+    if(s)x[k][id]=s;else delete x[k][id];
+    if(!Object.keys(x[k]).length)delete x[k];
+    saveData(x);
+  }
+  function next(s){return s===''?'P':s==='P'?'R':s==='R'?'A':s==='A'?'J':''}
+  function counts(id){
+    let p=0,r=0,a=0,j=0,n=0;
+    for(const d of days()){const s=status(id,d);if(s){n++;if(s==='P')p++;else if(s==='R')r++;else if(s==='A')a++;else if(s==='J')j++;}}
+    return {p,r,a,j,n,pct:n?Math.round(((p+r+j)/n)*100):0};
+  }
+  function renderStudents(){
+    const list=students(),box=$('attendanceStudents');
+    $('attendanceStudentEmpty').style.display=list.length?'none':'block';
+    box.innerHTML=list.map((s,i)=>`<div class="student-box">
+      <span class="student-number">${i+1}</span>
+      <input value="${esc(s.name)}" placeholder="Nombre del alumno ${i+1}" onchange="attRename('${s.id}',this.value)">
+      <button type="button" class="student-remove" onclick="attRemoveStudent('${s.id}')" title="Eliminar">×</button>
+    </div>`).join('');
+  }
+  function render(){
+    const list=students(),schoolDays=days();
+    $('attTitle').textContent='Asistencia mensual · '+($('attGrade')?.value||'6.º Primaria')+' · Grupo '+($('attGroup')?.value||'A');
+    $('attMonthBadge').textContent=monthName();
+    if(!list.length){
+      $('attendanceMonthEmpty').style.display='block';$('attendanceMonthTable').innerHTML='';$('attendanceSummary').innerHTML='';stats();return;
+    }
+    $('attendanceMonthEmpty').style.display='none';
+    let h='<thead><tr><th class="student-col">Alumno</th>';
+    for(const d of schoolDays)h+=`<th class="attendance-day">${d}<small>${weekday(d)}</small></th>`;
+    h+='<th>Asistencia</th></tr></thead><tbody>';
+    list.forEach(s=>{
+      const c=counts(s.id);
+      h+=`<tr><td class="student-name-cell">${esc(s.name||'Sin nombre')}</td>`;
+      for(const d of schoolDays){const st=status(s.id,d);h+=`<td class="attendance-cell status-${st||'empty'}" onclick="attCycle('${s.id}',${d})" title="Cambiar estado">${st||'·'}</td>`}
+      h+=`<td class="attendance-percent">${c.n?c.pct+'%':'—'}</td></tr>`;
+    });
+    h+='</tbody>';
+    $('attendanceMonthTable').innerHTML='<table class="attendance-month">'+h+'</table>';
+    summary();stats();
+  }
+  function stats(){
+    let p=0,r=0,a=0,j=0,n=0;
+    students().forEach(s=>{const c=counts(s.id);p+=c.p;r+=c.r;a+=c.a;j+=c.j;n+=c.n});
+    $('attTotal').textContent=students().length;$('attPresent').textContent=p;$('attLate').textContent=r;$('attAbsent').textContent=a;
+    $('attPercent').textContent=n?Math.round(((p+r+j)/n)*100)+'%':'0%';
+  }
+  function summary(){
+    const list=students();
+    $('attendanceSummary').innerHTML=`<div class="attendance-month-wrap"><table class="attendance-month" style="width:100%;min-width:760px">
+      <thead><tr><th class="student-col">Alumno</th><th>Presentes</th><th>Retardos</th><th>Faltas</th><th>Justificadas</th><th>% Asistencia</th></tr></thead>
+      <tbody>${list.map(s=>{const c=counts(s.id);return `<tr><td class="student-name-cell">${esc(s.name||'Sin nombre')}</td><td>${c.p}</td><td>${c.r}</td><td>${c.a}</td><td>${c.j}</td><td class="attendance-percent">${c.n?c.pct+'%':'—'}</td></tr>`}).join('')}</tbody>
+    </table></div>`;
+  }
+  window.attAddStudent=function(){
+    const list=students();list.push({id:'s'+Date.now()+Math.random().toString(36).slice(2),name:''});saveStudents(list);renderStudents();render();
+    setTimeout(()=>document.querySelector('#attendanceStudents input:last-of-type')?.focus(),30);
+  };
+  window.attAddFive=function(){
+    const list=students();for(let i=0;i<5;i++)list.push({id:'s'+Date.now()+Math.random().toString(36).slice(2)+i,name:''});
+    saveStudents(list);renderStudents();render();
+  };
+  window.attRename=function(id,name){const list=students(),s=list.find(x=>x.id===id);if(s){s.name=name.trim();saveStudents(list);render()}}
+  window.attRemoveStudent=function(id){
+    const s=students().find(x=>x.id===id);if(!s)return;
+    if(!confirm('¿Eliminar a '+(s.name||'este alumno')+' de la lista?'))return;
+    saveStudents(students().filter(x=>x.id!==id));renderStudents();render();if(typeof toast==='function')toast('Alumno eliminado.');
+  };
+  window.attCycle=function(id,d){setStatus(id,d,next(status(id,d)));render()};
+  window.attMarkAll=function(s){
+    if(!students().length){if(typeof toast==='function')toast('Primero agrega alumnos.');return}
+    const x=data();students().forEach(st=>{for(const d of days()){const k=key(d);if(!x[k])x[k]={};x[k][st.id]=s}});saveData(x);render();
+  };
+  window.attClearMonth=function(){
+    if(!confirm('¿Limpiar el registro del mes seleccionado?'))return;
+    const x=data();students().forEach(st=>{for(const d of days()){const k=key(d);if(x[k])delete x[k][st.id];if(x[k]&&!Object.keys(x[k]).length)delete x[k]}});saveData(x);render();
+  };
+  window.attCurrentMonth=function(){$('attMonth').value=new Date().toISOString().slice(0,7);render()};
+  window.attSaveMonth=function(){saveStudents(students());saveData(data());if(typeof toast==='function')toast('✓ Registro guardado.')};
+  window.attExportCSV=function(){
+    if(!students().length)return;
+    const schoolDays=days();
+    let csv='Alumno,'+schoolDays.join(',')+',Presentes,Retardos,Faltas,Justificadas,% Asistencia\n';
+    students().forEach(s=>{const c=counts(s.id);csv+='"'+String(s.name||'').replaceAll('"','""')+'",'+schoolDays.map(d=>status(s.id,d)).join(',')+','+c.p+','+c.r+','+c.a+','+c.j+','+(c.n?c.pct+'%':'')+'\n'});
+    const u=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');a.href=u;a.download='asistencia_mensual.csv';a.click();URL.revokeObjectURL(u);
+  };
+  window.attPrint=function(){window.print()};
+
+  function init(){
+    if(!$('attMonth'))return;
+    $('attMonth').value=new Date().toISOString().slice(0,7);
+    ['attMonth','attGrade','attGroup'].forEach(id=>$(id)?.addEventListener('change',()=>{renderStudents();render()}));
+    renderStudents();render();
+  }
+  init();
+
+  const oldShow=window.showView;
+  window.showView=function(id){
+    if(id==='attendance'){
+      document.querySelectorAll('.planner-view').forEach(v=>v.style.display='none');
+      const v=$('attendance');if(v)v.style.display='block';
+      document.querySelectorAll('.nav a[data-action]').forEach(a=>a.classList.toggle('active',a.dataset.action==='attendance'));
+      renderStudents();render();window.scrollTo({top:0,behavior:'smooth'});return;
+    }
+    if(typeof oldShow==='function')return oldShow(id);
+  };
+})();
+</script>
+
+
+
+<script id="recent-plans-home">
+(function(){
+  const KEY='creatividad_docente_planes';
+  const esc=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  function getPlans(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return []}}
+  function renderRecentPlans(){
+    const box=document.getElementById('recentPlansHome');
+    if(!box)return;
+    const plans=getPlans().slice(0,4);
+    if(!plans.length){
+      box.innerHTML='<div class="recent-item"><div class="docicon">📚</div><div><strong>Aún no tienes planeaciones guardadas</strong><small>Crea una nueva planeación para verla aquí.</small></div></div>';
+      return;
+    }
+    const icons=['','background:#e8f7ef;color:#0a9b61','background:#fff0df;color:#e88912','background:#eee9ff;color:#6340d5'];
+    box.innerHTML=plans.map((p,i)=>{
+      const name=p.project?.name||'Planeación sin nombre';
+      const grade=p.academic?.grade||'Grado no indicado';
+      const field=p.academic?.field||'Campo no indicado';
+      const date=p.createdAt?new Date(p.createdAt).toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'}):'Sin fecha';
+      return `<button type="button" class="recent-item recent-plan-home" data-plan-id="${esc(p.id)}" style="width:100%;border:0;text-align:left;cursor:pointer;background:transparent;${i===0?'':'border-top:1px solid #edf0f5;'}"><div class="docicon" style="${icons[i]||''}">▤</div><div><strong>${esc(name)}</strong><small>${esc(grade)} · ${esc(field)} · ${esc(date)}</small></div></button>`;
+    }).join('');
+    box.querySelectorAll('.recent-plan-home').forEach(btn=>btn.addEventListener('click',()=>{
+      const id=btn.dataset.planId;
+      if(typeof window.openSavedPlan==='function'){
+        window.openSavedPlan(id);
+      }else{
+        showView('plans');
+      }
+    }));
+  }
+  window.renderRecentPlansHome=renderRecentPlans;
+  document.addEventListener('DOMContentLoaded',renderRecentPlans);
+  window.addEventListener('storage',e=>{if(e.key===KEY)renderRecentPlans()});
+  const oldSave=window.saveCurrentPlan;
+  if(typeof oldSave==='function'){
+    window.saveCurrentPlan=function(){const result=oldSave.apply(this,arguments);renderRecentPlans();return result};
+  }
+  const oldShow=window.showView;
+  if(typeof oldShow==='function'){
+    window.showView=function(id){const r=oldShow.apply(this,arguments);if(id==='home')setTimeout(renderRecentPlans,30);return r};
+  }
+})();
+</script>
+<script id="attendance-chart-js">
+(function(){
+  const $=id=>document.getElementById(id);
+  function read(k,f){try{return JSON.parse(localStorage.getItem(k)||JSON.stringify(f))}catch(e){return f}}
+  function groupKey(){return (($('attGrade')?.value||'6.º Primaria')+'|'+($('attGroup')?.value||'A')).replace(/\s+/g,'_')}
+  function month(){return $('attMonth')?.value||new Date().toISOString().slice(0,7)}
+  function days(){const [y,m]=month().split('-').map(Number),total=new Date(y,m,0).getDate(),out=[];for(let d=1;d<=total;d++){const w=new Date(y,m-1,d).getDay();if(w!==0&&w!==6)out.push(d)}return out}
+  function monthName(){const [y,m]=month().split('-').map(Number);return new Intl.DateTimeFormat('es-MX',{month:'long',year:'numeric'}).format(new Date(y,m-1,1))}
+  function students(){const x=read('creatividad_docente_alumnos',[]);if(Array.isArray(x))return x;return Array.isArray(x[groupKey()])?x[groupKey()]:[]}
+  function attendanceData(){return read('creatividad_docente_asistencia',{})}
+  function status(data,id,d){return data[month()+'|'+groupKey()+'|'+String(d).padStart(2,'0')]?.[id]||''}
+  function counts(data,id){let p=0,r=0,a=0,j=0,n=0;days().forEach(d=>{const st=status(data,id,d);if(st){n++;if(st==='P')p++;else if(st==='R')r++;else if(st==='A')a++;else if(st==='J')j++;}});return {p,r,a,j,n,pct:n?Math.round(((p+r+j)/n)*100):0}}
+  window.attShowChart=function(){
+    const list=students().filter(s=>String(s.name||'').trim());
+    const data=attendanceData(),box=$('attendanceChartContent');
+    $('attendanceChartSubtitle').textContent=''+monthName()+' · '+($('attGrade')?.value||'6.º Primaria')+' · Grupo '+($('attGroup')?.value||'A');
+    if(!list.length){box.innerHTML='<div class="attendance-chart-empty"><div style="font-size:42px">📊</div><h3>No hay alumnos registrados</h3><p>Agrega alumnos y registra su asistencia para mostrar la gráfica.</p></div>';}
+    else{
+      const cs=list.map(s=>({s,c:counts(data,s.id)}));
+      let totalP=0,totalR=0,totalA=0,totalJ=0,totalN=0;cs.forEach(x=>{totalP+=x.c.p;totalR+=x.c.r;totalA+=x.c.a;totalJ+=x.c.j;totalN+=x.c.n});
+      const overall=totalN?Math.round(((totalP+totalR+totalJ)/totalN)*100):0;
+      const deg=Math.round(overall*3.6);
+      box.innerHTML=`<div class="attendance-chart-overall"><div class="attendance-donut" style="background:conic-gradient(#6844d9 0deg,#6844d9 ${deg}deg,#ececf2 ${deg}deg,#ececf2 360deg)"><span>${overall}%</span></div><div><h3 style="margin:0 0 8px">Asistencia general del grupo</h3><p style="margin:0;color:#697386;font-size:13px">Se considera asistencia efectiva: <b>presente, retardo y justificada</b>. La gráfica usa únicamente lunes a viernes.</p><div class="attendance-chart-legend"><span>👥 <b>${list.length}</b> alumnos</span><span>✅ <b>${totalP}</b> presentes</span><span>⏰ <b>${totalR}</b> retardos</span><span>❌ <b>${totalA}</b> faltas</span><span>🟦 <b>${totalJ}</b> justificadas</span></div></div></div><h3 style="margin:0 0 14px">Porcentaje por alumno</h3><div class="attendance-bars">${cs.map(x=>`<div class="attendance-bar-row"><div class="attendance-bar-name" title="${String(x.s.name||'Sin nombre').replace(/"/g,'&quot;')}">${String(x.s.name||'Sin nombre').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}</div><div class="attendance-bar-track"><div class="attendance-bar-fill" data-width="${x.c.pct}%"></div></div><div class="attendance-bar-value">${x.c.n?x.c.pct+'%':'—'}</div></div>`).join('')}</div>`;
+      requestAnimationFrame(()=>box.querySelectorAll('.attendance-bar-fill').forEach(el=>el.style.width=el.dataset.width));
+    }
+    $('attendanceChartOverlay').style.display='flex';
+  };
+  window.attCloseChart=function(){if($('attendanceChartOverlay'))$('attendanceChartOverlay').style.display='none'};
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')attCloseChart()});
+})();
+</script>
+
+<script id="navigation-cleanup">
+(function(){
+  const previousNavigation = window.showView;
+
+  window.showView = function(id){
+    // Always hide every application view before opening the requested one.
+    document.querySelectorAll('.planner-view').forEach(function(view){
+      view.style.display = 'none';
+      view.style.visibility = 'hidden';
+    });
+
+    // Reset the Ideas sub-menu when entering the Ideas section.
+    if(id === 'library'){
+      const menu = document.getElementById('ideasMenu');
+      const panel = document.getElementById('ideaToolPanel');
+      if(menu) menu.style.display = 'grid';
+      if(panel) panel.style.display = 'none';
+    }
+
+    // Close overlays left by another section.
+    const picker = document.getElementById('savedPlanPickerOverlay');
+    if(picker && id !== 'library') picker.style.display = 'none';
+
+    // Delegate to the existing application navigation.
+    if(typeof previousNavigation === 'function'){
+      previousNavigation(id);
+    }
+
+    // Enforce the final visibility state after the old handlers run.
+    document.querySelectorAll('.planner-view').forEach(function(view){
+      if(view.id !== id){
+        view.style.display = 'none';
+        view.style.visibility = 'hidden';
+      }
+    });
+
+    const target = document.getElementById(id);
+    if(target){
+      target.style.display = 'block';
+      target.style.visibility = 'visible';
+      target.style.opacity = '1';
+    }
+
+    document.querySelectorAll('.nav a[data-action]').forEach(function(a){
+      a.classList.toggle('active', a.dataset.action === id);
+    });
+
+    window.scrollTo({top:0,left:0,behavior:'instant'});
+  };
 })();
 </script>
 

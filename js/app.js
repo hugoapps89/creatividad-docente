@@ -356,7 +356,43 @@ schoolLogoInput?.addEventListener('change',e=>{
   reader.readAsDataURL(file);
 });
 const phaseByGrade={1:3,2:3,3:4,4:4,5:5,6:5};
-function clean(s){return String(s??'').replace(/[\u00ad\u200b\u200c\u200d]/g,'').replace(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])-\s*(?=[A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/g,'$1').replace(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])\s*[-–—]\s*(?=[A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/g,'$1').replace(/\r?\n+/g,' ').replace(/\s+/g,' ').trim()}
+function clean(s){
+  return String(s??'')
+    .replace(/[\u00ad\u200b\u200c\u200d]/g,'')
+    // Une únicamente palabras partidas por guion de salto de línea:
+    // "fragmen- tos" -> "fragmentos". Conserva los guiones semánticos:
+    // "problema–solución", "causa–consecuencia", etc.
+    .replace(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])-(?=\s+[A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/g,'$1')
+    .replace(/\r?\n+/g,' ')
+    .replace(/\s+/g,' ')
+    .trim()
+    // Correcciones conocidas de extracción de la base curricular.
+    .replace(/\bproblema–solución\b/gi,'problema–solución')
+    .replace(/\bproblema–solución\b/gi,'problema–solución')
+    .replace(/\bcomparación–contraste\b/gi,'comparación–contraste')
+    .replace(/\bcomparación–contraste\b/gi,'comparación–contraste')
+    .replace(/\bcausa–consecuencia\b/gi,'causa–consecuencia');
+}
+function normalizeCurriculumText(s){
+  let t = String(s ?? '');
+
+  // El PDF curricular contiene guiones de corte de palabra.
+  t = t.replace(/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])-(?=\s+[A-Za-zÁÉÍÓÚÜÑáéíóúüñ])/g,'$1');
+
+  // Corrección de las tres expresiones que estaban apareciendo
+  // concatenadas en la interfaz.
+  t = t
+    .replace(/problema\\s*[–—-]?\\s*solución/gi,'problema–solución')
+    .replace(/problemasolución/gi,'problema–solución')
+    .replace(/problemasolucion/gi,'problema–solución')
+    .replace(/comparación\\s*[–—-]?\\s*contraste/gi,'comparación–contraste')
+    .replace(/comparacióncontraste/gi,'comparación–contraste')
+    .replace(/comparacioncontraste/gi,'comparación–contraste')
+    .replace(/causa\\s*[–—-]?\\s*consecuencia/gi,'causa–consecuencia')
+    .replace(/causaconsecuencia/gi,'causa–consecuencia');
+
+  return t.replace(/\\s+/g,' ').trim();
+}
 function dataFor(ph){
   const key='PLANEAnEM_FASE_'+ph;
   const d=window[key];
@@ -396,8 +432,8 @@ function getLibraryData(){
             phase: `Fase ${phaseNumber}`,
             grade: `${gradeNumber}.º Primaria`,
             field: fieldName,
-            content: clean(item.content || ''),
-            pda: clean(item.pda || '')
+            content: normalizeCurriculumText(clean(item.content || '')),
+            pda: normalizeCurriculumText(clean(item.pda || ''))
           });
 
         });
@@ -1089,7 +1125,7 @@ function fillContents(){
   const arr=itemsFor();
   content.innerHTML='';
   if(!arr.length){content.innerHTML='<option value="">No hay contenidos disponibles para este grado y campo formativo</option>';renderPdas(null);updateCurriculumCount(0);return;}
-  arr.forEach((it,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=clean(it.content);content.appendChild(o)});
+  arr.forEach((it,i)=>{const o=document.createElement('option');o.value=String(i);o.textContent=normalizeCurriculumText(clean(it.content));content.appendChild(o)});
   content.selectedIndex=0;
   renderPdas(arr[0]);
   updateCurriculumCount(arr.length);
@@ -1376,9 +1412,13 @@ window.deleteSavedPlan=deleteSavedPlan;
 function openSavedPlan(id){
 
   const plans=getSavedPlans();
-  const plan=plans.find(p=>p.id===id);
+  const plan=plans.find(p=>String(p.id)===String(id));
 
-  if(!plan)return;
+  if(!plan){
+    console.warn('No se encontró la planeación solicitada desde Recientes:', id);
+    toast('No se pudo abrir la planeación.');
+    return;
+  }
 
   editingPlanId=plan.id;
   schoolLogoData=plan.school?.logo||'';
